@@ -9,15 +9,15 @@
         <div class="container">
             <div class="form-box">
                 <el-form ref="form" :model="form" label-width="80px">
-                    <el-form-item label="表单名称">
-                        <el-input v-model="form.name"></el-input>
-                    </el-form-item>
                     <el-form-item label="选择器">
                         <el-select v-model="form.region" placeholder="请选择">
-                            <el-option key="bbk" label="步步高" value="bbk"></el-option>
-                            <el-option key="xtc" label="小天才" value="xtc"></el-option>
-                            <el-option key="imoo" label="imoo" value="imoo"></el-option>
+                            <el-option key="bonus" label="抽奖" value="bonus"></el-option>
+                            <el-option key="score" label="评分" value="score"></el-option>
+                            <el-option key="vote" label="投票" value="vote"></el-option>
                         </el-select>
+                    </el-form-item>
+                    <el-form-item label="表单名称">
+                        <el-input v-model="form.name"></el-input>
                     </el-form-item>
                     <el-form-item label="日期时间">
                         <el-col :span="11">

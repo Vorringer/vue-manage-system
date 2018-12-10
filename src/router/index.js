@@ -40,6 +40,11 @@ export default new Router({
                     meta: { title: '基本表单' }
                 },
                 {
+                    path: '/game',
+                    component: resolve => require(['../components/page/game.vue'], resolve),
+                    meta: { title: '互动项目' }
+                },
+                {
                     // 富文本编辑器组件
                     path: '/editor',
                     component: resolve => require(['../components/page/VueEditor.vue'], resolve),

@@ -63,6 +63,10 @@
                                 title: '基本表单'
                             },
                             {
+                                index: 'game',
+                                title: '互动项目'
+                            },
+                            {
                                 index: '3-2',
                                 title: '三级菜单',
                                 subs: [
