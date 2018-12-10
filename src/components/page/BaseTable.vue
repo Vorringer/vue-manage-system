@@ -187,6 +187,7 @@
                 this.idx = index;
                 const item = this.tableData[index];
                 this.form = {
+                    id: item.id,
                     name: item.name,
                     type: item.type,
                     maxnum: item.maxnum,
@@ -238,9 +239,18 @@
                     });
                 }
                 else {
-                    this.$set(this.tableData, this.idx, this.form);
-                    this.editVisible = false;
-                    this.$message.success(`修改第 ${this.idx+1} 行成功`);
+                    this.$axios({
+                        method: 'put',
+                        url: this.url + this.tableData[this.idx]['id'],
+                        data: this.form,
+                        headers:{
+						    'Content-Type':'application/json'
+					    }
+                    }).then(response => {
+                        this.$set(this.tableData, this.idx, this.form);
+                        this.editVisible = false;
+                        this.$message.success(`修改第 ${this.idx+1} 行成功`);
+                    });
                 }          
             },
             // 确定删除
@@ -248,11 +258,10 @@
                 console.log("ID: ", this.tableData[this.idx]['id'], " ", typeof(this.tableData[this.idx]['id']));
                 this.$axios({
                         method: 'delete',
-                        url: this.url,
-                        data: this.tableData[this.idx]['id'],
-                        //headers:{
-						//    'Content-Type':'application/json'
-					    //}
+                        url: this.url + this.tableData[this.idx]['id'],
+                        headers:{
+						    'Content-Type':'application/json'
+					    }
                     }).then(response => {
                         this.tableData.splice(this.idx, 1);
                         this.$message.success(`删除成功`);
