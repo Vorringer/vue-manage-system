@@ -93,11 +93,6 @@
                         title: 'schart图表'
                     },
                     {
-                        icon: 'el-icon-rank',
-                        index: 'drag',
-                        title: '拖拽列表'
-                    },
-                    {
                         icon: 'el-icon-lx-warn',
                         index: '6',
                         title: '错误处理',

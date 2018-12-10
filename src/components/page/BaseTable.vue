@@ -14,14 +14,23 @@
                 </el-select>
                 <el-input v-model="select_word" placeholder="筛选关键词" class="handle-input mr10"></el-input>
                 <el-button type="primary" icon="search" @click="search">搜索</el-button>
+                <el-button type="primary" icon="search" @click="handleAdd()">添加数据</el-button>
             </div>
-            <el-table :data="data" border class="table" ref="multipleTable" @selection-change="handleSelectionChange">
+            <el-table :data="tableData" border class="table" ref="multipleTable" @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="55" align="center"></el-table-column>
-                <el-table-column prop="date" label="日期" sortable width="150">
+                <el-table-column prop="id" label="ID" width="150">
                 </el-table-column>
-                <el-table-column prop="name" label="姓名" width="120">
+                <el-table-column prop="name" label="名称" width="120">
                 </el-table-column>
-                <el-table-column prop="address" label="地址" :formatter="formatter">
+                <el-table-column prop="type" label="类型" width="120">
+                </el-table-column>
+                <el-table-column prop="maxnum" label="最大人数" width="120">
+                </el-table-column>
+                <el-table-column prop="begintime" label="开始时间" sortable width="150">
+                </el-table-column>
+                <el-table-column prop="endtime" label="结束时间" sortable width="150">
+                </el-table-column>
+                <el-table-column prop="location" label="地址" width="120">
                 </el-table-column>
                 <el-table-column label="操作" width="180" align="center">
                     <template slot-scope="scope">
@@ -39,14 +48,23 @@
         <!-- 编辑弹出框 -->
         <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
             <el-form ref="form" :model="form" label-width="50px">
-                <el-form-item label="日期">
-                    <el-date-picker type="date" placeholder="选择日期" v-model="form.date" value-format="yyyy-MM-dd" style="width: 100%;"></el-date-picker>
-                </el-form-item>
-                <el-form-item label="姓名">
+                <el-form-item label="名称">
                     <el-input v-model="form.name"></el-input>
                 </el-form-item>
+                <el-form-item label="类型">
+                    <el-input v-model="form.type"></el-input>
+                </el-form-item>
                 <el-form-item label="地址">
-                    <el-input v-model="form.address"></el-input>
+                    <el-input v-model="form.location"></el-input>
+                </el-form-item>
+                <el-form-item label="最大人数">
+                    <el-input type = "number" v-model="form.maxnum"></el-input>
+                </el-form-item>
+                <el-form-item label="开始时间">
+                    <el-date-picker type="date" placeholder="选择日期" v-model="form.begintime" value-format="yyyy-MM-dd" style="width: 100%;"></el-date-picker>
+                </el-form-item>
+                <el-form-item label="结束时间">
+                    <el-date-picker type="date" placeholder="选择日期" v-model="form.endtime" value-format="yyyy-MM-dd" style="width: 100%;"></el-date-picker>
                 </el-form-item>
 
             </el-form>
@@ -72,7 +90,7 @@
         name: 'basetable',
         data() {
             return {
-                url: './static/vuetable.json',
+                url: 'http://120.78.91.122:8080/Entity/Uebde5c813efa2/MobileMeet/Conference/',
                 tableData: [],
                 cur_page: 1,
                 multipleSelection: [],
@@ -83,9 +101,13 @@
                 editVisible: false,
                 delVisible: false,
                 form: {
+                    id: 0,
                     name: '',
-                    date: '',
-                    address: ''
+                    type: '',
+                    maxnum: 0,
+                    begintime: '',
+                    endtime: '',
+                    location: ''
                 },
                 idx: -1
             }
@@ -122,6 +144,13 @@
             },
             // 获取 easy-mock 的模拟数据
             getData() {
+
+                this.$axios.get(this.url)
+                    .then(response => {
+                        this.tableData = response.data['Conference'];
+                        console.log(this.tableData);
+                    });
+                /*
                 // 开发环境使用 easy-mock 数据，正式环境使用 json 文件
                 if (process.env.NODE_ENV === 'development') {
                     this.url = '/ms/table/list';
@@ -131,6 +160,7 @@
                 }).then((res) => {
                     this.tableData = res.data.list;
                 })
+                */
             },
             search() {
                 this.is_search = true;
@@ -141,13 +171,28 @@
             filterTag(value, row) {
                 return row.tag === value;
             },
+            handleAdd() {
+                this.idx = -1;
+                this.form = {
+                    name: '',
+                    type: '',
+                    maxnum: 0,
+                    begintime: '',
+                    endtime: '',
+                    location: ''
+                }
+                this.editVisible = true;
+            },
             handleEdit(index, row) {
                 this.idx = index;
                 const item = this.tableData[index];
                 this.form = {
                     name: item.name,
-                    date: item.date,
-                    address: item.address
+                    type: item.type,
+                    maxnum: item.maxnum,
+                    begintime: item.begintime,
+                    endtime: item.endtime,
+                    location: item.location
                 }
                 this.editVisible = true;
             },
@@ -170,15 +215,49 @@
             },
             // 保存编辑
             saveEdit() {
-                this.$set(this.tableData, this.idx, this.form);
-                this.editVisible = false;
-                this.$message.success(`修改第 ${this.idx+1} 行成功`);
+                if (this.idx == -1) {
+                    for (var key in this.form) {
+                        console.log(key, ": ", typeof(key));
+                        if (this.form[key] == '' || this.form[key] == 0) {
+                            this.$message.error('请完善数据！');
+                            return;
+                        }
+                    }
+                    this.form['maxnum'] = parseInt(this.form['maxnum']);
+                    this.$axios({
+                        method: 'post',
+                        url: this.url,
+                        data: this.form,
+                        headers:{
+						    'Content-Type':'application/json'
+					    }
+                    }).then(response => {
+                        this.tableData.push(this.form);
+                        this.editVisible = false;
+                        this.$message.success(`添加成功`);
+                    });
+                }
+                else {
+                    this.$set(this.tableData, this.idx, this.form);
+                    this.editVisible = false;
+                    this.$message.success(`修改第 ${this.idx+1} 行成功`);
+                }          
             },
             // 确定删除
             deleteRow(){
-                this.tableData.splice(this.idx, 1);
-                this.$message.success('删除成功');
-                this.delVisible = false;
+                console.log("ID: ", this.tableData[this.idx]['id'], " ", typeof(this.tableData[this.idx]['id']));
+                this.$axios({
+                        method: 'delete',
+                        url: this.url,
+                        data: this.tableData[this.idx]['id'],
+                        //headers:{
+						//    'Content-Type':'application/json'
+					    //}
+                    }).then(response => {
+                        this.tableData.splice(this.idx, 1);
+                        this.$message.success(`删除成功`);
+                        this.delVisible = false;
+                    });
             }
         }
     }
