@@ -17,43 +17,14 @@
                         </el-select>
                     </el-form-item>
                     <div class="container" v-if="gameVisible['bonus']">
-                        <el-form-item label="表单名称">
-                            <el-input v-model="form.name"></el-input>
+                        <el-form-item label="奖项类型">
+                            <el-input v-model="bonusForm.type"></el-input>
                         </el-form-item>
-                        <el-form-item label="日期时间">
-                            <el-col :span="11">
-                                <el-date-picker type="date" placeholder="选择日期" v-model="form.date1" style="width: 100%;"></el-date-picker>
-                            </el-col>
-                            <el-col class="line" :span="2">-</el-col>
-                            <el-col :span="11">
-                                <el-time-picker placeholder="选择时间" v-model="form.date2" style="width: 100%;"></el-time-picker>
-                            </el-col>
-                        </el-form-item>
-                        <el-form-item label="城市级联">
-                            <el-cascader :options="options" v-model="form.options"></el-cascader>
-                        </el-form-item>
-                        <el-form-item label="选择开关">
-                            <el-switch v-model="form.delivery"></el-switch>
-                        </el-form-item>
-                        <el-form-item label="多选框">
-                            <el-checkbox-group v-model="form.type">
-                                <el-checkbox label="步步高" name="type"></el-checkbox>
-                                <el-checkbox label="小天才" name="type"></el-checkbox>
-                                <el-checkbox label="imoo" name="type"></el-checkbox>
-                            </el-checkbox-group>
-                        </el-form-item>
-                        <el-form-item label="单选框">
-                            <el-radio-group v-model="form.resource">
-                                <el-radio label="步步高"></el-radio>
-                                <el-radio label="小天才"></el-radio>
-                                <el-radio label="imoo"></el-radio>
-                            </el-radio-group>
-                        </el-form-item>
-                        <el-form-item label="文本框">
-                            <el-input type="textarea" rows="5" v-model="form.desc"></el-input>
+                        <el-form-item label="奖品名称">
+                            <el-input v-model="bonusForm.content"></el-input>
                         </el-form-item>
                         <el-form-item>
-                            <el-button type="primary" @click="onSubmit">表单提交</el-button>
+                            <el-button type="primary" @click="bonusSumbit">表单提交</el-button>
                             <el-button>取消</el-button>
                         </el-form-item>
                     </div>
@@ -69,6 +40,9 @@
         name: 'baseform',
         data: function(){
             return {
+                bonusUrl: "http://120.78.91.122:8080/Entity/Uebde5c813efa2/MobileMeet/Bonus",
+                voteUrl: "",
+                scoreUrl: "http://120.78.91.122:8080/Entity/Uebde5c813efa2/MobileMeet/Score",
                 options:[
                     {
                         value: 'guangdong',
@@ -136,6 +110,24 @@
                     resource: '小天才',
                     desc: '',
                     options: []
+                },
+                bonusForm: {
+                    type: '',
+                    content: '',
+                    conferenceID: 0,
+                    userID: 0,
+                    time: ''
+                },
+                voteForm: {
+                    content: [],
+                    value: [],
+                    conferenceID: 0,
+                    time: ''
+                },
+                scoreForm: {
+                    value: 0,
+                    conferenceID: 0,
+                    time: ''
                 }
             }
         },
@@ -143,12 +135,35 @@
             onSubmit() {
                 this.$message.success('提交成功！');
             },
+            bonusSumbit() {
+                var bonusData = this.bonusForm;
+                for (var key in bonusData) {
+                    if (bonusData[key] === 0 || bonusData[key] === '') {
+                        this.$message.error('请完善数据！');
+                        return;
+                    }
+                }
+                bonusData.conferenceID = this.$route.params['conferenceID'];
+                /*
+                this.$axios({
+                        method: 'post',
+                        url: this.bonusUrl,
+                        data: bonusData,
+                        headers:{
+						    'Content-Type':'application/json'
+					    }
+                    }).then(response => {
+                        this.bonusForm = {};
+                        this.$message.success(`添加成功`);
+                });
+                */
+            },
             chooseGame() {
                 for (var key in this.gameVisible) {
                     this.gameVisible[key] = false;
                 }
                 this.gameVisible[this.form['gameType']] = true;
-                console.log(this.gameVisible);
+                console.log("time: ", new Date().getTime());
             }
         }
     }

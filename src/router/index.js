@@ -41,6 +41,8 @@ export default new Router({
                 },
                 {
                     path: '/game',
+                    name: 'game',
+                    params: {},
                     component: resolve => require(['../components/page/game.vue'], resolve),
                     meta: { title: '互动项目' }
                 },

@@ -32,9 +32,10 @@
                 </el-table-column>
                 <el-table-column prop="location" label="地址" width="120">
                 </el-table-column>
-                <el-table-column label="操作" width="180" align="center">
+                <el-table-column label="操作" width="250" align="center">
                     <template slot-scope="scope">
                         <el-button type="text" icon="el-icon-edit" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                        <el-button type="text" icon="el-icon-edit" @click="handleGame(scope.$index, scope.row)">设置互动项目</el-button>
                         <el-button type="text" icon="el-icon-delete" class="red" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
                     </template>
                 </el-table-column>
@@ -197,6 +198,11 @@
                 }
                 this.editVisible = true;
             },
+            handleGame(index, row) {
+                const item = this.tableData[index];
+                //console.log("before id: ", item.id);
+                this.$router.push({name:'game', params:{conferenceID: item.id}});
+            },
             handleDelete(index, row) {
                 this.idx = index;
                 this.delVisible = true;
@@ -218,8 +224,8 @@
             saveEdit() {
                 if (this.idx == -1) {
                     for (var key in this.form) {
-                        console.log(key, ": ", typeof(key));
-                        if (this.form[key] == '' || this.form[key] == 0) {
+                        //console.log(key, ": ", typeof(key));
+                        if (this.form[key] === '' || this.form[key] === 0) {
                             this.$message.error('请完善数据！');
                             return;
                         }
@@ -255,7 +261,7 @@
             },
             // 确定删除
             deleteRow(){
-                console.log("ID: ", this.tableData[this.idx]['id'], " ", typeof(this.tableData[this.idx]['id']));
+                //console.log("ID: ", this.tableData[this.idx]['id'], " ", typeof(this.tableData[this.idx]['id']));
                 this.$axios({
                         method: 'delete',
                         url: this.url + this.tableData[this.idx]['id'],
