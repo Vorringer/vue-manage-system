@@ -5,64 +5,11 @@
 
             -->
             <el-col :span="16">
-                <el-row :gutter="20" class="mgb20">
-                    <el-col :span="8">
-                        <el-card shadow="hover" :body-style="{padding: '0px'}">
-                            <div class="grid-content grid-con-1">
-                                <i class="el-icon-lx-people grid-con-icon"></i>
-                                <div class="grid-cont-right">
-                                    <div class="grid-num">1234</div>
-                                    <div>用户访问量</div>
-                                </div>
-                            </div>
-                        </el-card>
-                    </el-col>
-                    <el-col :span="8">
-                        <el-card shadow="hover" :body-style="{padding: '0px'}">
-                            <div class="grid-content grid-con-2">
-                                <i class="el-icon-lx-notice grid-con-icon"></i>
-                                <div class="grid-cont-right">
-                                    <div class="grid-num">321</div>
-                                    <div>系统消息</div>
-                                </div>
-                            </div>
-                        </el-card>
-                    </el-col>
-                    <el-col :span="8">
-                        <el-card shadow="hover" :body-style="{padding: '0px'}">
-                            <div class="grid-content grid-con-3">
-                                <i class="el-icon-lx-goods grid-con-icon"></i>
-                                <div class="grid-cont-right">
-                                    <div class="grid-num">5000</div>
-                                    <div>数量</div>
-                                </div>
-                            </div>
-                        </el-card>
-                    </el-col>
-                </el-row>
-                <el-card shadow="hover" style="height:403px;">
-                    <div slot="header" class="clearfix">
-                        <span>待办事项</span>
-                        <el-button style="float: right; padding: 3px 0" type="text">添加</el-button>
-                    </div>
-                    <el-table :data="todoList" :show-header="false" height="304" style="width: 100%;font-size:14px;">
-                        <el-table-column width="40">
-                            <template slot-scope="scope">
-                                <el-checkbox v-model="scope.row.status"></el-checkbox>
-                            </template>
-                        </el-table-column>
-                        <el-table-column>
-                            <template slot-scope="scope">
-                                <div class="todo-item" :class="{'todo-item-del': scope.row.status}">{{scope.row.title}}</div>
-                            </template>
-                        </el-table-column>
-                        <el-table-column width="60">
-                            <template slot-scope="scope">
-                                <i class="el-icon-edit"></i>
-                                <i class="el-icon-delete"></i>
-                            </template>
-                        </el-table-column>
-                    </el-table>
+                <el-card shadow="hover" style="height:525px;">
+                    <el-card shadow="hover">
+                        <schart ref="bar" class="schart" canvasId="scoreCanvas" :data="scoreForm.contents" type="bar" :options="options"></schart>
+                    </el-card>
+                    
                 </el-card>
             </el-col>
             <el-col :span="8">
@@ -76,7 +23,7 @@
                                     <el-option key="vote" label="投票" value="vote"></el-option>
                                 </el-select>
                             </el-form-item>
-                            <div class="container-center" style="width:100%" v-if="gameVisible['bonus']">
+                            <div class="container" style="width:100%" v-if="gameVisible['bonus']">
                                 <el-form-item label="奖项类型">
                                     <el-input v-model="bonusForm.type"></el-input>
                                 </el-form-item>
@@ -88,22 +35,18 @@
                                     <el-button>取消</el-button>
                                 </el-form-item>
                             </div>
-                            <div class="container-center" style="width:100%" v-if="gameVisible['score']" >
-                                    <el-form-item label="单选框">
-                                        
-                                        <el-radio-group v-model="scoreForm.value">
-                                            <el-container direction="vertical">
-                                                <el-radio label="5分"></el-radio>
-                                                <el-radio label="4分"></el-radio>
-                                                <el-radio label="3分"></el-radio>
-                                                <el-radio label="2分"></el-radio>
-                                                <el-radio label="1分"></el-radio>
-                                                <el-radio label="0分"></el-radio>
-                                            </el-container>
-                                        </el-radio-group>
-                                        
-                                    </el-form-item>
-                            
+                            <div class="container"  v-if="gameVisible['score']">
+                                <el-form-item v-for="item in scoreForm.contents" 
+                                    label="打分项"
+                                    :key="item.key"
+                                >
+                                    <el-input v-model="item.content"></el-input>
+                                </el-form-item>
+                                <el-form-item>
+                                    <el-button @click="addScoreInput">添加</el-button>
+                                    <el-button type="primary" @click="scoreSumbit">表单提交</el-button>
+                                    <el-button>取消</el-button>
+                                </el-form-item>
                             </div>
                         </el-form>
                     </div>
@@ -133,31 +76,9 @@
         name: 'dashboard',
         data() {
             return {
+                baseURL: "https://vorringer.moe:18081",
+                wssURL:"wss://vorringer.moe:18081",
                 name: localStorage.getItem('ms_username'),
-                todoList: [{
-                        title: '今天要修复100个bug',
-                        status: false,
-                    },
-                    {
-                        title: '今天要修复100个bug',
-                        status: false,
-                    },
-                    {
-                        title: '今天要写100行代码加几个bug吧',
-                        status: false,
-                    }, {
-                        title: '今天要修复100个bug',
-                        status: false,
-                    },
-                    {
-                        title: '今天要修复100个bug',
-                        status: true,
-                    },
-                    {
-                        title: '今天要写100行代码加几个bug吧',
-                        status: true,
-                    }
-                ],
                 data: [{
                         name: '2018/09/04',
                         value: 1083
@@ -224,19 +145,21 @@
                     content: '',
                     conferenceID: 0,
                     userID: 0,
-                    time: ''
+                   // time: ''
                 },
                 voteForm: {
-                    content: [],
-                    value: [],
+                    contents: [{content:"", value:0}, {content:"", value:0}, {content:"", value:0}],
                     conferenceID: 0,
-                    time: ''
+                    //time: ''
                 },
                 scoreForm: {
-                    value: 0,
+                    contents: [{content:"", value:5}, {content:"", value:5}, {content:"", value:5}],
                     conferenceID: 0,
-                    time: ''
-                }
+                    //time: ''
+                },
+                bonusWs:null,
+                voteWs:null,
+                scoreWs:null
             }
         },
         components: {
@@ -303,13 +226,41 @@
                 });
                 */
             },
+            scoreSumbit() {
+                console.log("scoreForm: ", JSON.stringify(this.scoreForm));
+                var scoreData = this.scoreForm; 
+                for (var key in scoreData) {
+                    if (scoreData[key] === '') {
+                        this.$message.error('请完善数据！');
+                        return;
+                    }
+                }
+
+                scoreData.conferenceID = 0;//this.$route.params['conferenceID'];
+
+                var scoreWsURL = this.wssURL + "/setScore";
+                var self = this;
+                this.scoreWs = new WebSocket(scoreWsURL);
+                this.scoreWs.onopen = function() {
+                    self.scoreWs.send(JSON.stringify(scoreData));
+                }
+                this.scoreWs.onmessage = function(msg) {
+                    console.log("score receive: %s", JSON.stringify(msg.data));
+                    //self.scoreForm['contents'][0]['content'] = JSON.stringify(msg.data);
+                }
+                
+            },
             chooseGame() {
                 for (var key in this.gameVisible) {
                     this.gameVisible[key] = false;
                 }
                 this.gameVisible[this.form['gameType']] = true;
                 console.log("time: ", new Date().getTime());
+            },
+            addScoreInput() {
+                this.scoreForm['contents'].push({content:"", value:5});
             }
+
         }
     }
 
