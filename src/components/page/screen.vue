@@ -5,14 +5,29 @@
 
             -->
             <el-col :span="16">
-                <el-card shadow="hover" style="height:525px;">
+                <el-card shadow="hover" style="height:500px;">
                     
                     <el-card shadow="hover" v-if="chartVisible['score']">
                         <schart ref="scoreCanvas" class="schart" canvasId="scoreCanvas" :data="scoreForm.contents" type="bar" :options="options"></schart>
                     </el-card>
                     
-                    
+                    <div v-if="chartVisible['bonus']">
+                        <p class="text-center"><span>恭喜{{bonusForm.userID}}获得{{bonusForm.type}}: {{bonusForm.name}}!</span>
+                        </p>
+                    </div>
                 </el-card>
+                <el-footer>
+                    <el-col :span="23">
+                    <el-input
+                        placeholder="请发送弹幕"
+                        suffix-icon="el-icon-edit-outline"
+                        v-model="bullet">
+                    </el-input>
+                    </el-col>
+                    <el-col :span="1">
+                    <el-button type="primary" plain>发送</el-button>
+                    </el-col>
+                </el-footer>
             </el-col>
             <el-col :span="8">
                 <el-card shadow="hover" class="mgb20" style="height:525px;">
@@ -132,7 +147,7 @@
                     bonus: false
                 },
                 chartVisible: {
-                    score: true,
+                    score: false,
                     vote: false,
                     bonus: false
                 },
@@ -213,12 +228,24 @@
             bonusSumbit() {
                 var bonusData = this.bonusForm;
                 for (var key in bonusData) {
-                    if (bonusData[key] === 0 || bonusData[key] === '') {
+                    if (bonusData[key] === '') {
                         this.$message.error('请完善数据！');
                         return;
                     }
                 }
-                bonusData.conferenceID = this.$route.params['conferenceID'];
+                bonusData.conferenceID = this.$route.params['conferenceID'] === undefined ? 0 : this.$route.params['conferenceID'] ;
+
+                var bonusWsURL = this.wssURL + "/setBonus";
+                var self = this;
+                this.bonusWs = new WebSocket(bonusWsURL);
+                this.bonusWs.onopen = function() {
+                    self.bonusWs.send(JSON.stringify(bonusData));
+                }
+                this.bonusWs.onmessage = function(msg) {
+                    console.log("bonus receive: %s", JSON.stringify(msg.data));
+                    //console.log(typeof(msg.data));
+                    self.bonusForm = JSON.parse(msg.data);
+                }
                 /*
                 this.$axios({
                         method: 'post',
@@ -243,7 +270,7 @@
                     }
                 }
 
-                scoreData.conferenceID = 0;//this.$route.params['conferenceID'];
+                scoreData.conferenceID = this.$route.params['conferenceID'] === undefined ? 0 : this.$route.params['conferenceID'] ;
 
                 var scoreWsURL = this.wssURL + "/setScore";
                 var self = this;
@@ -383,6 +410,29 @@
     .schart {
         width: 100%;
         height: 300px;
+    }
+
+    .text-center {
+        margin-bottom: 0;
+        font-size: 12px;
+        min-height: 31px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 31px;
+        margin-top: 5px;
+        white-space: normal;
+    }
+
+    .text-center span {
+        text-align: left;
+        font-size: 50px;
+        text-overflow: -o-ellipsis-lastline;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display:-webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
     }
 
 </style>
