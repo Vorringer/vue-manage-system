@@ -52,6 +52,15 @@ a {
     border-radius: 5px;
 }
 
+.container-center {
+    padding: 30px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    text-align:center;
+    margin: 0 auto;
+}
+
 .crumbs {
     margin: 10px 0;
 }

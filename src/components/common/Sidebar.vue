@@ -54,6 +54,11 @@
                         title: 'tab选项卡'
                     },
                     {
+                        icon: 'el-icon-lx-copy',
+                        index: 'screen',
+                        title: '大屏幕'
+                    },
+                    {
                         icon: 'el-icon-lx-calendar',
                         index: '3',
                         title: '表单相关',

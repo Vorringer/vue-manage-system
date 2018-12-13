@@ -40,6 +40,11 @@ export default new Router({
                     meta: { title: '基本表单' }
                 },
                 {
+                    path: '/screen',
+                    component: resolve => require(['../components/page/screen.vue'], resolve),
+                    meta: { title: '大屏幕' }
+                },
+                {
                     path: '/game',
                     name: 'game',
                     params: {},
