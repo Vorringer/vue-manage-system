@@ -6,9 +6,11 @@
             -->
             <el-col :span="16">
                 <el-card shadow="hover" style="height:525px;">
-                    <el-card shadow="hover">
-                        <schart ref="bar" class="schart" canvasId="scoreCanvas" :data="scoreForm.contents" type="bar" :options="options"></schart>
+                    
+                    <el-card shadow="hover" v-if="chartVisible['score']">
+                        <schart ref="scoreCanvas" class="schart" canvasId="scoreCanvas" :data="scoreForm.contents" type="bar" :options="options"></schart>
                     </el-card>
+                    
                     
                 </el-card>
             </el-col>
@@ -28,7 +30,7 @@
                                     <el-input v-model="bonusForm.type"></el-input>
                                 </el-form-item>
                                 <el-form-item label="奖品名称">
-                                    <el-input v-model="bonusForm.content"></el-input>
+                                    <el-input v-model="bonusForm.name"></el-input>
                                 </el-form-item>
                                 <el-form-item>
                                     <el-button type="primary" @click="bonusSumbit">表单提交</el-button>
@@ -40,7 +42,7 @@
                                     label="打分项"
                                     :key="item.key"
                                 >
-                                    <el-input v-model="item.content"></el-input>
+                                    <el-input v-model="item.name"></el-input>
                                 </el-form-item>
                                 <el-form-item>
                                     <el-button @click="addScoreInput">添加</el-button>
@@ -109,7 +111,7 @@
                     }
                 ],
                 options: {
-                    title: '最近七天每天的用户访问量',
+                    title: '评分结果',
                     showValue: false,
                     fillColor: 'rgb(45, 140, 240)',
                     bottomPadding: 30,
@@ -125,6 +127,11 @@
                     topPadding: 30
                 },
                 gameVisible: {
+                    score: false,
+                    vote: false,
+                    bonus: false
+                },
+                chartVisible: {
                     score: true,
                     vote: false,
                     bonus: false
@@ -142,18 +149,18 @@
                 },
                 bonusForm: {
                     type: '',
-                    content: '',
+                    name: '',
                     conferenceID: 0,
                     userID: 0,
                    // time: ''
                 },
                 voteForm: {
-                    contents: [{content:"", value:0}, {content:"", value:0}, {content:"", value:0}],
+                    contents: [{name:"", value:0}, {name:"", value:0}, {name:"", value:0}],
                     conferenceID: 0,
                     //time: ''
                 },
                 scoreForm: {
-                    contents: [{content:"", value:5}, {content:"", value:5}, {content:"", value:5}],
+                    contents: [{name:"", value:5}, {name:"", value:5}, {name:"", value:5}],
                     conferenceID: 0,
                     //time: ''
                 },
@@ -200,7 +207,7 @@
                 }, 300);
             },
             renderChart(){
-                this.$refs.bar.renderChart();
+                this.$refs.scoreCanvas.renderChart();
                 this.$refs.line.renderChart();
             },
             bonusSumbit() {
@@ -246,7 +253,8 @@
                 }
                 this.scoreWs.onmessage = function(msg) {
                     console.log("score receive: %s", JSON.stringify(msg.data));
-                    //self.scoreForm['contents'][0]['content'] = JSON.stringify(msg.data);
+                    //console.log(typeof(msg.data));
+                    self.scoreForm = JSON.parse(msg.data);
                 }
                 
             },
@@ -258,7 +266,7 @@
                 console.log("time: ", new Date().getTime());
             },
             addScoreInput() {
-                this.scoreForm['contents'].push({content:"", value:5});
+                this.scoreForm['contents'].push({name:"", value:5});
             }
 
         }
