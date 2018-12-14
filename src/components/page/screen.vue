@@ -15,6 +15,10 @@
                         <p class="text-center"><span>恭喜{{bonusForm.userID}}获得{{bonusForm.type}}: {{bonusForm.name}}!</span>
                         </p>
                     </div>
+
+                    <el-card shadow="hover" v-if="chartVisible['vote']">
+                        <schart ref="voteCanvas" class="schart" canvasId="voteCanvas" :data="voteForm.contents" type="bar" :options="options"></schart>
+                    </el-card>
                 </el-card>
                 <el-footer>
                     <el-col :span="23">
@@ -48,8 +52,8 @@
                                     <el-input v-model="bonusForm.name"></el-input>
                                 </el-form-item>
                                 <el-form-item>
+                                    <el-button>清空</el-button>
                                     <el-button type="primary" @click="bonusSumbit">表单提交</el-button>
-                                    <el-button>取消</el-button>
                                 </el-form-item>
                             </div>
                             <div class="container"  v-if="gameVisible['score']">
@@ -61,8 +65,21 @@
                                 </el-form-item>
                                 <el-form-item>
                                     <el-button @click="addScoreInput">添加</el-button>
+                                    <el-button>清空</el-button>
                                     <el-button type="primary" @click="scoreSumbit">表单提交</el-button>
-                                    <el-button>取消</el-button>
+                                </el-form-item>
+                            </div>
+                            <div class="container"  v-if="gameVisible['vote']">
+                                <el-form-item v-for="item in voteForm.contents" 
+                                    label="投票选项"
+                                    :key="item.key"
+                                >
+                                    <el-input v-model="item.name"></el-input>
+                                </el-form-item>
+                                <el-form-item>
+                                    <el-button @click="addVoteInput">添加</el-button>
+                                    <el-button>清空</el-button>
+                                    <el-button type="primary" @click="voteSumbit">表单提交</el-button>
                                 </el-form-item>
                             </div>
                         </el-form>
@@ -170,7 +187,7 @@
                    // time: ''
                 },
                 voteForm: {
-                    contents: [{name:"", value:0}, {name:"", value:0}, {name:"", value:0}],
+                    contents: [{name:"", value:1}, {name:"", value:4}, {name:"", value:3}],
                     conferenceID: 0,
                     //time: ''
                 },
@@ -179,6 +196,7 @@
                     conferenceID: 0,
                     //time: ''
                 },
+                bullet:'',
                 bonusWs:null,
                 voteWs:null,
                 scoreWs:null
@@ -222,7 +240,10 @@
                 }, 300);
             },
             renderChart(){
-                this.$refs.scoreCanvas.renderChart();
+                if (this.$refs.scoreCanvas != undefined)
+                    this.$refs.scoreCanvas.renderChart();
+                if (this.$refs.voteCanvas != undefined)
+                    this.$refs.voteCanvas.renderChart();
                 this.$refs.line.renderChart();
             },
             bonusSumbit() {
@@ -234,10 +255,14 @@
                     }
                 }
                 bonusData.conferenceID = this.$route.params['conferenceID'] === undefined ? 0 : this.$route.params['conferenceID'] ;
-
+                //console.log(JSON.stringify(bonusData));
                 var bonusWsURL = this.wssURL + "/setBonus";
                 var self = this;
-                this.bonusWs = new WebSocket(bonusWsURL);
+                if (this.bonusWs === null)
+                    this.bonusWs = new WebSocket(bonusWsURL);
+                else {
+                    this.bonusWs.send(JSON.stringify(bonusData));
+                }
                 this.bonusWs.onopen = function() {
                     self.bonusWs.send(JSON.stringify(bonusData));
                 }
@@ -245,6 +270,13 @@
                     console.log("bonus receive: %s", JSON.stringify(msg.data));
                     //console.log(typeof(msg.data));
                     self.bonusForm = JSON.parse(msg.data);
+                    self.chartVisible['bonus'] = true;
+                    setTimeout(function() {
+                        self.chartVisible['bonus'] = false;
+                    }, 10000);
+                }
+                this.bonusWs.onclose = function() {
+                    self.bonusWs = null;
                 }
                 /*
                 this.$axios({
@@ -274,7 +306,11 @@
 
                 var scoreWsURL = this.wssURL + "/setScore";
                 var self = this;
-                this.scoreWs = new WebSocket(scoreWsURL);
+                if (this.scoreWs === null) 
+                    this.scoreWs = new WebSocket(scoreWsURL);
+                else {
+                    this.scoreWs.send(JSON.stringify(scoreData));
+                }
                 this.scoreWs.onopen = function() {
                     self.scoreWs.send(JSON.stringify(scoreData));
                 }
@@ -282,6 +318,49 @@
                     console.log("score receive: %s", JSON.stringify(msg.data));
                     //console.log(typeof(msg.data));
                     self.scoreForm = JSON.parse(msg.data);
+                    self.chartVisible['score'] = true;
+                    setTimeout(function() {
+                        self.chartVisible['score'] = false;
+                    }, 10000);
+                }
+                this.scoreWs.onclose = function() {
+                    self.scoreWs = null;
+                }
+                
+            },
+            voteSumbit() {
+                console.log("voteForm: ", JSON.stringify(this.voteForm));
+                var voteData = this.voteForm; 
+                for (var key in voteData) {
+                    if (voteData[key] === '') {
+                        this.$message.error('请完善数据！');
+                        return;
+                    }
+                }
+
+                voteData.conferenceID = this.$route.params['conferenceID'] === undefined ? 0 : this.$route.params['conferenceID'] ;
+
+                var voteWsURL = this.wssURL + "/setvote";
+                var self = this;
+                if (this.voteWs === null) 
+                    this.voteWs = new WebSocket(voteWsURL);
+                else {
+                    this.voteWs.send(JSON.stringify(voteData));
+                }
+                this.voteWs.onopen = function() {
+                    self.voteWs.send(JSON.stringify(voteData));
+                    self.chartVisible['vote'] = true;
+                    setTimeout(function() {
+                        self.chartVisible['vote'] = false;
+                    }, 10000);
+                }
+                this.voteWs.onmessage = function(msg) {
+                    console.log("vote receive: %s", JSON.stringify(msg.data));
+                    //console.log(typeof(msg.data));
+                    self.voteForm = JSON.parse(msg.data);
+                }
+                this.voteWs.onclose = function() {
+                    self.voteWs = null;
                 }
                 
             },
@@ -294,6 +373,9 @@
             },
             addScoreInput() {
                 this.scoreForm['contents'].push({name:"", value:5});
+            },
+            addVoteInput() {
+                this.voteForm['contents'].push({name:"", value:0});
             }
 
         }
@@ -426,7 +508,7 @@
 
     .text-center span {
         text-align: left;
-        font-size: 50px;
+        font-size: 30px;
         text-overflow: -o-ellipsis-lastline;
         overflow: hidden;
         text-overflow: ellipsis;
