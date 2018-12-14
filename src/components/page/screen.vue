@@ -2,34 +2,43 @@
     <div>
         <el-row :gutter="20">
             <!--
-
             -->
             <el-col :span="16">
                 <el-card shadow="hover" style="height:500px;">
-                    
-                    <el-card shadow="hover" v-if="chartVisible['score']">
-                        <schart ref="scoreCanvas" class="schart" canvasId="scoreCanvas" :data="scoreForm.contents" type="bar" :options="options"></schart>
-                    </el-card>
-                    
-                    <div v-if="chartVisible['bonus']">
-                        <p class="text-center"><span>恭喜{{bonusForm.userID}}获得{{bonusForm.type}}: {{bonusForm.name}}!</span>
-                        </p>
-                    </div>
+                    <div class="bigDiv">
+                        <div class="smallDiv1">
+                            <vue-baberrage
+                                :isShow= "barrageIsShow"
+                                :barrageList = "barrageList"
+                                :loop = "barrageLoop"
+                            >
+                            </vue-baberrage>
+                        </div>
+                        <div class="smallDiv2">
+                            <el-card shadow="hover" v-if="chartVisible['score']">
+                                <schart ref="scoreCanvas" class="schart" canvasId="scoreCanvas" :data="scoreForm.contents" type="bar" :options="options"></schart>
+                            </el-card>
+                            <div v-if="chartVisible['bonus']">
+                                <p class="text-center"><span>恭喜{{bonusForm.userID}}获得{{bonusForm.type}}: {{bonusForm.name}}!</span>
+                                </p>
+                            </div>
 
-                    <el-card shadow="hover" v-if="chartVisible['vote']">
-                        <schart ref="voteCanvas" class="schart" canvasId="voteCanvas" :data="voteForm.contents" type="bar" :options="options"></schart>
-                    </el-card>
+                            <el-card shadow="hover" v-if="chartVisible['vote']">
+                                <schart ref="voteCanvas" class="schart" canvasId="voteCanvas" :data="voteForm.contents" type="bar" :options="options"></schart>
+                            </el-card>
+                        </div>
+                    </div>
                 </el-card>
                 <el-footer>
                     <el-col :span="23">
                     <el-input
                         placeholder="请发送弹幕"
                         suffix-icon="el-icon-edit-outline"
-                        v-model="bullet">
+                        v-model="bulletTemp">
                     </el-input>
                     </el-col>
                     <el-col :span="1">
-                    <el-button type="primary" plain>发送</el-button>
+                    <el-form><el-form-item><el-button type="primary" plain @click="sendBullet">发送</el-button></el-form-item></el-form>
                     </el-col>
                 </el-footer>
             </el-col>
@@ -106,6 +115,9 @@
 <script>
     import Schart from 'vue-schart';
     import bus from '../common/bus';
+    import Vue from 'vue'
+    import vueBaberrage from 'vue-baberrage'
+    Vue.use(vueBaberrage);
     export default {
         name: 'dashboard',
         data() {
@@ -196,10 +208,15 @@
                     conferenceID: 0,
                     //time: ''
                 },
-                bullet:'',
+                bulletTemp: 'Hello vue-baberrage',
+                barrageIsShow: true,
+                currentId : 0,
+                barrageLoop: false,
+                barrageList: [],
                 bonusWs:null,
                 voteWs:null,
-                scoreWs:null
+                scoreWs:null,
+                bulletWs:null
             }
         },
         components: {
@@ -213,6 +230,18 @@
         created(){
             this.handleListener();
             this.changeDate();
+            this.bulletWs = new WebSocket(this.wssURL + "/bullet");
+            var self = this;
+            this.bulletWs.onmessage = function(msg) {
+                self.barrageList.push({
+                    id: ++self.currentId,
+                    msg: msg.data,
+                    // barrageStyle: "normal",
+                    time: 5,
+                    type: 0,
+                    position: 'bottom'
+                });
+            }
         },
         activated(){
             this.handleListener();
@@ -352,10 +381,11 @@
                     self.chartVisible['vote'] = true;
                     setTimeout(function() {
                         self.chartVisible['vote'] = false;
-                    }, 10000);
+                    }, 2000);
                 }
                 this.voteWs.onmessage = function(msg) {
                     console.log("vote receive: %s", JSON.stringify(msg.data));
+                    self.chartVisible['vote'] = true;
                     //console.log(typeof(msg.data));
                     self.voteForm = JSON.parse(msg.data);
                 }
@@ -376,6 +406,17 @@
             },
             addVoteInput() {
                 this.voteForm['contents'].push({name:"", value:0});
+            },
+            sendBullet() {
+                console.log("send bullet", this.bulletTemp);
+                this.barrageList.push({
+                    id: ++this.currentId,
+                    msg: this.bulletTemp,
+                    // barrageStyle: "normal",
+                    time: 5,
+                    type: 0,
+                    position: 'bottom'
+                });
             }
 
         }
@@ -516,5 +557,21 @@
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
     }
+    .bigDiv{
+    position: relative;
+}
+.smallDiv1{
+    position: absolute;
+    width: 100%;
+    height: 500px;
+    z-index: 2;
+}
+.smallDiv2{
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+    height: 300px;
+}
+
 
 </style>
