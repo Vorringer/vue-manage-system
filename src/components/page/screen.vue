@@ -563,7 +563,7 @@
 .smallDiv1{
     position: absolute;
     width: 100%;
-    height: 500px;
+    height: 450px;
     z-index: 2;
 }
 .smallDiv2{
