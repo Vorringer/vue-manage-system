@@ -199,7 +199,7 @@
                    // time: ''
                 },
                 voteForm: {
-                    contents: [{name:"", value:1}, {name:"", value:4}, {name:"", value:3}],
+                    contents: [{name:"", value:0}, {name:"", value:0}, {name:"", value:0}],
                     conferenceID: 0,
                     //time: ''
                 },
@@ -381,7 +381,7 @@
                     self.chartVisible['vote'] = true;
                     setTimeout(function() {
                         self.chartVisible['vote'] = false;
-                    }, 2000);
+                    }, 30000);
                 }
                 this.voteWs.onmessage = function(msg) {
                     console.log("vote receive: %s", JSON.stringify(msg.data));

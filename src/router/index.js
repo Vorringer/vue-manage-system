@@ -41,6 +41,8 @@ export default new Router({
                 },
                 {
                     path: '/screen',
+                    name: 'screen',
+                    params: {},
                     component: resolve => require(['../components/page/screen.vue'], resolve),
                     meta: { title: '大屏幕' }
                 },
