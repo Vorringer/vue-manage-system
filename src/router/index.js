@@ -7,7 +7,7 @@ export default new Router({
     routes: [
         {
             path: '/',
-            redirect: '/screen'
+            redirect: '/table'
         },
         {
             path: '/',

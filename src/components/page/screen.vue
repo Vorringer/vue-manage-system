@@ -15,6 +15,7 @@
                             </vue-baberrage>
                         </div>
                         <div class="smallDiv2">
+                                <div id="qrcode" class = "qrcode-center" v-if="qrcodeVisibile"></div>
                             <el-card shadow="hover" v-if="chartVisible['score']">
                                 <schart ref="scoreCanvas" class="schart" canvasId="scoreCanvas" :data="scoreForm.contents" type="bar" :options="options"></schart>
                             </el-card>
@@ -105,7 +106,7 @@
             </el-col>
             <el-col :span="12">
                 <el-card shadow="hover">
-                    <schart ref="line" class="schart" canvasId="line" :data="data" type="line" :options="options2"></schart>
+                    <schart ref="line" class="schart" canvasId="line" :data="bulletStat" type="line" :options="options2"></schart>
                 </el-card>
             </el-col>
         </el-row>
@@ -116,6 +117,7 @@
     import Schart from 'vue-schart';
     import bus from '../common/bus';
     import Vue from 'vue'
+    import QRCode from 'qrcodejs2' 
     import vueBaberrage from 'vue-baberrage'
     Vue.use(vueBaberrage);
     export default {
@@ -153,6 +155,9 @@
                         name: '2018/09/10',
                         value: 1065
                     }
+                ],
+                bulletStat: [
+
                 ],
                 options: {
                     title: '评分结果',
@@ -210,6 +215,7 @@
                 },
                 bulletTemp: 'Hello vue-baberrage',
                 barrageIsShow: true,
+                qrcodeVisibile: true,
                 currentId : 0,
                 barrageLoop: false,
                 barrageList: [],
@@ -232,6 +238,7 @@
             this.changeDate();
             this.bulletWs = new WebSocket(this.wssURL + "/bullet");
             var self = this;
+            console.log("bulletwss: ", this.bulletWs);
             this.bulletWs.onmessage = function(msg) {
                 self.barrageList.push({
                     id: ++self.currentId,
@@ -242,6 +249,26 @@
                     position: 'bottom'
                 });
             }
+        },
+        mounted() {
+            var self = this;
+            this.qrcode();
+            setInterval(function(){
+                self.$axios({
+                    method: 'get',
+                    url: "https://vorringer.moe:18081/bulletstat",
+                    headers:{
+                        'Content-Type':'application/json'
+                    }
+                }).then(response => {
+                    console.log("bullet stat: ", response.data);
+                    var bstat = response.data;
+                    self.bulletStat = [];
+                    for (var i = 0; i < bstat.stat.length; ++i) {
+                        self.bulletStat.push({name: bstat.time[i], value: bstat.stat[i]});
+                    }
+                });
+            }, 10000);
         },
         activated(){
             this.handleListener();
@@ -257,6 +284,17 @@
                     const date = new Date(now - (6 - index) * 86400000);
                     item.name = `${date.getFullYear()}/${date.getMonth()+1}/${date.getDate()}`
                 })
+            },
+            qrcode () {  
+                let qrcode = new QRCode('qrcode', {  
+                    width: 400,  
+                    height: 400, // 高度  
+                    text:  this.$route.params['conferenceID'] + ''// 二维码内容  
+                    // render: 'canvas' // 设置渲染方式（有两种方式 table和canvas，默认是canvas）  
+                    // background: '#f0f'  
+                    // foreground: '#ff0'  
+                })  
+                console.log(qrcode)  
             },
             handleListener(){
                 bus.$on('collapse', this.handleBus);
@@ -398,6 +436,7 @@
                 for (var key in this.gameVisible) {
                     this.gameVisible[key] = false;
                 }
+                this.qrcodeVisibile = false;
                 this.gameVisible[this.form['gameType']] = true;
                 console.log("time: ", new Date().getTime());
             },
@@ -563,7 +602,7 @@
 .smallDiv1{
     position: absolute;
     width: 100%;
-    height: 450px;
+    height: 400px;
     z-index: 2;
 }
 .smallDiv2{
@@ -571,6 +610,13 @@
     z-index: 1;
     width: 100%;
     height: 300px;
+}
+.qrcode-center {
+    margin-bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 5px;
 }
 
 
