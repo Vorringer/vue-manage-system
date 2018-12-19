@@ -48,7 +48,7 @@
     export default {
         data() {
             return {
-                collapse: false,
+                collapse: true,
                 fullscreen: false,
                 name: 'linxin',
                 message: 2
@@ -70,8 +70,8 @@
             },
             // 侧边栏折叠
             collapseChage(){
-                this.collapse = !this.collapse;
-                bus.$emit('collapse', this.collapse);
+                 this.collapse = true;
+                 bus.$emit('collapse', this.collapse);
             },
             // 全屏事件
             handleFullScreen(){
@@ -102,9 +102,8 @@
             }
         },
         mounted(){
-            if(document.body.clientWidth < 1500){
                 this.collapseChage();
-            }
+        
         }
     }
 </script>

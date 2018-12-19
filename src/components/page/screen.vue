@@ -14,8 +14,12 @@
                             >
                             </vue-baberrage>
                         </div>
+                        <div class="bg">
+                                <img :src="imageURL[imageIndex]" class="bgimg"> 
+                        </div>
+                        <div id="qrcode" class = "qrcode-center" v-if="qrcodeVisibile">
+                        </div>
                         <div class="smallDiv2">
-                                <div id="qrcode" class = "qrcode-center" v-if="qrcodeVisibile"></div>
                             <el-card shadow="hover" v-if="chartVisible['score']">
                                 <schart ref="scoreCanvas" class="schart" canvasId="scoreCanvas" :data="scoreForm.contents" type="bar" :options="options"></schart>
                             </el-card>
@@ -47,13 +51,22 @@
                 <el-card shadow="hover" class="mgb20" style="height:525px;">
                     <div class="user-info">
                         <el-form ref="form" :model="form" label-width="80px">
-                            <el-form-item label="选择器">
-                                <el-select v-model="form.gameType" placeholder="请选择" @change="chooseGame">
-                                    <el-option key="bonus" label="抽奖" value="bonus"></el-option>
-                                    <el-option key="score" label="评分" value="score"></el-option>
-                                    <el-option key="vote" label="投票" value="vote"></el-option>
-                                </el-select>
-                            </el-form-item>
+                            <el-row :gutter="20">
+                                <el-col :span="18">
+                                    <el-form-item label="选择器">
+                                        <el-select v-model="form.gameType" placeholder="请选择" @change="chooseGame">
+                                            <el-option key="bonus" label="抽奖" value="bonus"></el-option>
+                                            <el-option key="score" label="评分" value="score"></el-option>
+                                            <el-option key="vote" label="投票" value="vote"></el-option>
+                                        </el-select>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col :span="6">
+                                    <el-button type="primary" @click="switchQR">
+                                        显示二维码
+                                    </el-button>
+                                </el-col>
+                            </el-row>
                             <div class="container" style="width:100%" v-if="gameVisible['bonus']">
                                 <el-form-item label="奖项类型">
                                     <el-input v-model="bonusForm.type"></el-input>
@@ -161,19 +174,19 @@
                 ],
                 options: {
                     title: '评分结果',
-                    showValue: false,
-                    fillColor: 'rgb(45, 140, 240)',
+                    showValue: true,
+                    fillColor: '#FC6FA1',
                     bottomPadding: 30,
                     topPadding: 30
                 },
                 options2: {
-                    title: '最近七天用户访问趋势',
+                    title: '弹幕量变化情况',
                     fillColor: '#FC6FA1',
                     axisColor: '#008ACD',
                     contentColor: '#EEEEEE',
                     bgColor: '#F5F8FD',
                     bottomPadding: 30,
-                    topPadding: 30
+                    topPadding: 30,
                 },
                 gameVisible: {
                     score: false,
@@ -216,6 +229,9 @@
                 bulletTemp: 'Hello vue-baberrage',
                 barrageIsShow: true,
                 qrcodeVisibile: true,
+                backgroundVisible: true,
+                imageURL: [require("../../assets/default.jpg"), require("../../assets/score.png"), require("../../assets/vote.png"), require("../../assets/bonus.jpg")],
+                imageIndex: 0,
                 currentId : 0,
                 barrageLoop: false,
                 barrageList: [],
@@ -265,7 +281,7 @@
                     var bstat = response.data;
                     self.bulletStat = [];
                     for (var i = 0; i < bstat.stat.length; ++i) {
-                        self.bulletStat.push({name: bstat.time[i], value: bstat.stat[i]});
+                        self.bulletStat.push({name: bstat.time[i].substring(11, 16), value: bstat.stat[i]});
                     }
                 });
             }, 10000);
@@ -321,9 +337,11 @@
                         return;
                     }
                 }
+                this.imageIndex = 3;
                 bonusData.conferenceID = this.$route.params['conferenceID'] === undefined ? 0 : this.$route.params['conferenceID'] ;
                 //console.log(JSON.stringify(bonusData));
                 var bonusWsURL = this.wssURL + "/setBonus";
+
                 var self = this;
                 if (this.bonusWs === null)
                     this.bonusWs = new WebSocket(bonusWsURL);
@@ -340,6 +358,7 @@
                     self.chartVisible['bonus'] = true;
                     setTimeout(function() {
                         self.chartVisible['bonus'] = false;
+                        self.imageIndex = 0;
                     }, 10000);
                 }
                 this.bonusWs.onclose = function() {
@@ -361,6 +380,7 @@
             },
             scoreSumbit() {
                 console.log("scoreForm: ", JSON.stringify(this.scoreForm));
+                this.imageIndex = 1;
                 var scoreData = this.scoreForm; 
                 for (var key in scoreData) {
                     if (scoreData[key] === '') {
@@ -372,6 +392,7 @@
                 scoreData.conferenceID = this.$route.params['conferenceID'] === undefined ? 0 : this.$route.params['conferenceID'] ;
 
                 var scoreWsURL = this.wssURL + "/setScore";
+                var count = 0;
                 var self = this;
                 if (this.scoreWs === null) 
                     this.scoreWs = new WebSocket(scoreWsURL);
@@ -388,11 +409,13 @@
                     self.chartVisible['score'] = true;
                     setTimeout(function() {
                         self.chartVisible['score'] = false;
+                        self.imageIndex = 0;
                     }, 10000);
                 }
                 this.scoreWs.onclose = function() {
                     self.scoreWs = null;
                 }
+                this.options.title = "评分结果";
                 
             },
             voteSumbit() {
@@ -404,7 +427,8 @@
                         return;
                     }
                 }
-
+                this.imageIndex = 2;
+                this.options.title = "投票结果";
                 voteData.conferenceID = this.$route.params['conferenceID'] === undefined ? 0 : this.$route.params['conferenceID'] ;
 
                 var voteWsURL = this.wssURL + "/setvote";
@@ -416,13 +440,17 @@
                 }
                 this.voteWs.onopen = function() {
                     self.voteWs.send(JSON.stringify(voteData));
-                    self.chartVisible['vote'] = true;
-                    setTimeout(function() {
-                        self.chartVisible['vote'] = false;
-                    }, 30000);
                 }
+                var count = 0;
                 this.voteWs.onmessage = function(msg) {
                     console.log("vote receive: %s", JSON.stringify(msg.data));
+                    if (count == 0) {
+                        setTimeout(function() {
+                            self.chartVisible['vote'] = false;
+                            self.imageIndex = 0;;
+                        }, 30000);
+                    }
+                    count++;
                     self.chartVisible['vote'] = true;
                     //console.log(typeof(msg.data));
                     self.voteForm = JSON.parse(msg.data);
@@ -431,6 +459,16 @@
                     self.voteWs = null;
                 }
                 
+                
+            },
+            switchQR() {
+                if (this.qrcodeVisibile == true) {
+                    this.qrcodeVisibile = false;
+                }
+                else {
+                    this.qrcode();
+                    this.qrcodeVisibile = true;
+                }
             },
             chooseGame() {
                 for (var key in this.gameVisible) {
@@ -448,14 +486,7 @@
             },
             sendBullet() {
                 console.log("send bullet", this.bulletTemp);
-                this.barrageList.push({
-                    id: ++this.currentId,
-                    msg: this.bulletTemp,
-                    // barrageStyle: "normal",
-                    time: 5,
-                    type: 0,
-                    position: 'bottom'
-                });
+                this.bulletWs.send(this.bulletTemp);
             }
 
         }
@@ -603,20 +634,31 @@
     position: absolute;
     width: 100%;
     height: 400px;
-    z-index: 2;
+    z-index: 4;
 }
 .smallDiv2{
     position: absolute;
-    z-index: 1;
+    z-index: 3;
     width: 100%;
     height: 300px;
 }
 .qrcode-center {
-    margin-bottom: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 5px;
+    position: absolute;
+    left:50%;
+    top:50%;
+    margin:50px 0 0 -200px;
+    z-index: 5;
+}
+.bg {
+    position: absolute;
+    width: 980px;
+    height: 450px;
+    z-index: 1;
+}
+.bgimg {
+    display: block;
+    width: 100%;
+    height: 100%;
 }
 
 
