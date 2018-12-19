@@ -15,7 +15,7 @@
                             </vue-baberrage>
                         </div>
                         <div class="bg">
-                                <img :src="imageURL[imageIndex]" class="bgimg"> 
+                                <img :src="imageURL[imageIndex]" class="bgimg" v-if="bgVisible"> 
                         </div>
                         <div id="qrcode" class = "qrcode-center" v-if="qrcodeVisibile">
                         </div>
@@ -226,6 +226,7 @@
                     conferenceID: 0,
                     //time: ''
                 },
+                bgVisible: false,
                 bulletTemp: 'Hello vue-baberrage',
                 barrageIsShow: true,
                 qrcodeVisibile: true,
@@ -462,6 +463,7 @@
                 
             },
             switchQR() {
+                this.bgVisible = true;
                 if (this.qrcodeVisibile == true) {
                     this.qrcodeVisibile = false;
                 }
@@ -646,7 +648,7 @@
     position: absolute;
     left:50%;
     top:50%;
-    margin:50px 0 0 -200px;
+    margin:20px 0 0 -200px;
     z-index: 5;
 }
 .bg {
