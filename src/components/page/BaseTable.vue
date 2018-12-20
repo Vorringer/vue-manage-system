@@ -242,6 +242,10 @@
                         this.tableData.push(this.form);
                         this.editVisible = false;
                         this.$message.success(`添加成功`);
+                        this.$axios.get(this.url)
+                        .then(response => {
+                            this.tableData = response.data['Conference'];
+                        });
                     });
                 }
                 else {

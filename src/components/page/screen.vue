@@ -687,7 +687,7 @@
     position: absolute;
     z-index: 3;
     width: 100%;
-    height: 300px;
+    height: 400px;
 }
 .qrcode-center {
     position: absolute;
@@ -698,7 +698,7 @@
 }
 .bg {
     position: absolute;
-    width: 980px;
+    width: 1120px;
     height: 450px;
     z-index: 1;
 }
