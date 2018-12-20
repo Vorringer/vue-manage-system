@@ -24,7 +24,7 @@
                                 <schart ref="scoreCanvas" class="schart" canvasId="scoreCanvas" :data="scoreForm.contents" type="bar" :options="options"></schart>
                             </el-card>
                             <div v-if="chartVisible['bonus']">
-                                <p class="text-center"><span>恭喜{{bonusForm.userID}}获得{{bonusForm.type}}: {{bonusForm.name}}!</span>
+                                <p class="text-center"><span>恭喜任剑获得{{bonusForm.type}}: {{bonusForm.name}}!</span>
                                 </p>
                             </div>
 
