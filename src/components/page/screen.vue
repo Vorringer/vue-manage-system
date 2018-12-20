@@ -279,6 +279,28 @@
         mounted() {
             var self = this;
             this.qrcode();
+            self.$axios({
+                    method: 'get',
+                    url: "https://vorringer.moe:18081/bulletstat",
+                    headers:{
+                        'Content-Type':'application/json'
+                    }
+                }).then(response => {
+                    console.log("bullet stat: ", response.data);
+                    var bstat = response.data;
+                    self.bulletStat = [];
+                    self.satisIndex = bstat.hot[bstat.hot.length - 1];
+                    setTimeout(function() {
+                        for (var i = 0; i < bstat.stat.length; ++i) {
+                            var timeTmp = bstat.time[i].substring(11, 16);
+                            var hour = parseInt(timeTmp.substring(0, 2));
+                            hour = hour >= 16 ? hour - 16 : hour + 8;
+                            //console.log("hehe", timeTmp);
+                            timeTmp = (hour + "") + timeTmp.slice(2);
+                            self.bulletStat.push({name: timeTmp, value: bstat.stat[i]});
+                        }
+                    }, 1000);
+                });
             setInterval(function(){
                 self.$axios({
                     method: 'get',
