@@ -234,7 +234,7 @@
                     //time: ''
                 },
                 bgVisible: false,
-                bulletTemp: 'Hello vue-baberrage',
+                bulletTemp: '大家好',
                 barrageIsShow: true,
                 qrcodeVisibile: true,
                 backgroundVisible: true,
