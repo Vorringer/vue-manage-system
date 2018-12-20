@@ -201,7 +201,7 @@
             handleGame(index, row) {
                 const item = this.tableData[index];
                 //console.log("before id: ", item.id);
-                this.$router.push({name:'game', params:{conferenceID: item.id}});
+                this.$router.push({name:'screen', params:{conferenceID: item.id}});
             },
             handleDelete(index, row) {
                 this.idx = index;
