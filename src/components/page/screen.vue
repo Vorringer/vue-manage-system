@@ -63,7 +63,7 @@
                                 </el-col>
                                 <el-col :span="6">
                                     <el-button type="primary" @click="switchQR">
-                                        显示二维码
+                                        关闭二维码
                                     </el-button>
                                 </el-col>
                             </el-row>
@@ -477,6 +477,7 @@
                     this.gameVisible[key] = false;
                 }
                 this.qrcodeVisibile = false;
+                this.bgVisible = true;
                 this.gameVisible[this.form['gameType']] = true;
                 console.log("time: ", new Date().getTime());
             },
