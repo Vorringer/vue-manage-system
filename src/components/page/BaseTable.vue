@@ -2,7 +2,7 @@
     <div class="table">
         <div class="crumbs">
             <el-breadcrumb separator="/">
-                <el-breadcrumb-item><i class="el-icon-lx-cascades"></i> 基础表格</el-breadcrumb-item>
+                <el-breadcrumb-item><i class="el-icon-lx-cascades"></i> 会议信息</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
         <div class="container">
@@ -14,23 +14,23 @@
                 </el-select>
                 <el-input v-model="select_word" placeholder="筛选关键词" class="handle-input mr10"></el-input>
                 <el-button type="primary" icon="search" @click="search">搜索</el-button>
-                <el-button type="primary" icon="search" @click="handleAdd()">添加数据</el-button>
+                <el-button type="primary" icon="search" @click="handleAdd()">添加会议</el-button>
             </div>
             <el-table :data="tableData" border class="table" ref="multipleTable" @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="55" align="center"></el-table-column>
                 <el-table-column prop="id" label="ID" width="150">
                 </el-table-column>
-                <el-table-column prop="name" label="名称" width="120">
+                <el-table-column prop="name" label="名称" width="300">
                 </el-table-column>
                 <el-table-column prop="type" label="类型" width="120">
                 </el-table-column>
                 <el-table-column prop="maxnum" label="最大人数" width="120">
                 </el-table-column>
-                <el-table-column prop="begintime" label="开始时间" sortable width="150">
+                <el-table-column prop="begintime" label="开始时间" sortable width="190">
                 </el-table-column>
-                <el-table-column prop="endtime" label="结束时间" sortable width="150">
+                <el-table-column prop="endtime" label="结束时间" sortable width="190">
                 </el-table-column>
-                <el-table-column prop="location" label="地址" width="120">
+                <el-table-column prop="location" label="地址" width="300">
                 </el-table-column>
                 <el-table-column label="操作" width="250" align="center">
                     <template slot-scope="scope">
