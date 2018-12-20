@@ -409,14 +409,7 @@
             },
             sendBullet() {
                 console.log("send bullet", this.bulletTemp);
-                this.barrageList.push({
-                    id: ++this.currentId,
-                    msg: this.bulletTemp,
-                    // barrageStyle: "normal",
-                    time: 5,
-                    type: 0,
-                    position: 'bottom'
-                });
+                this.bulletWs.send(this.bulletTemp);
             }
 
         }
