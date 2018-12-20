@@ -118,8 +118,15 @@
                 </el-card>
             </el-col>
             <el-col :span="12">
-                <el-card shadow="hover">
-                    <schart ref="line" class="schart" canvasId="line" :data="bulletStat" type="line" :options="options2"></schart>
+                <el-card shadow="hover" style="height:340px"> 
+                    <div style="position:relative"> 
+                        <div class="satis">
+                            <img :src="satisURL[satisIndex]" style="height:80px">
+                        </div>
+                        <div class="line-chart">
+                            <schart ref="line" class="schart" canvasId="line" :data="bulletStat" type="line" :options="options2"></schart>
+                        </div>
+                    </div>
                 </el-card>
             </el-col>
         </el-row>
@@ -181,7 +188,7 @@
                 },
                 options2: {
                     title: '弹幕量变化情况',
-                    fillColor: '#FC6FA1',
+                    fillColor: '#FF7F27',
                     axisColor: '#008ACD',
                     contentColor: '#EEEEEE',
                     bgColor: '#F5F8FD',
@@ -190,7 +197,7 @@
                 },
                 gameVisible: {
                     score: false,
-                    vote: false,
+                    vote: true,
                     bonus: false
                 },
                 chartVisible: {
@@ -232,6 +239,8 @@
                 qrcodeVisibile: true,
                 backgroundVisible: true,
                 imageURL: [require("../../assets/default.jpg"), require("../../assets/score.png"), require("../../assets/vote.png"), require("../../assets/bonus.jpg")],
+                satisURL: [require("../../assets/boring.png"), require("../../assets/ok.png"), require("../../assets/interesting.png")],
+                satisIndex: 1,
                 imageIndex: 0,
                 currentId : 0,
                 barrageLoop: false,
@@ -281,11 +290,19 @@
                     console.log("bullet stat: ", response.data);
                     var bstat = response.data;
                     self.bulletStat = [];
-                    for (var i = 0; i < bstat.stat.length; ++i) {
-                        self.bulletStat.push({name: bstat.time[i].substring(11, 16), value: bstat.stat[i]});
-                    }
+                    self.satisIndex = bstat.hot[bstat.hot.length - 1];
+                    setTimeout(function() {
+                        for (var i = 0; i < bstat.stat.length; ++i) {
+                            var timeTmp = bstat.time[i].substring(11, 16);
+                            var hour = parseInt(timeTmp.substring(0, 2));
+                            hour = hour >= 16 ? hour - 16 : hour + 8;
+                            //console.log("hehe", timeTmp);
+                            timeTmp = (hour + "") + timeTmp.slice(2);
+                            self.bulletStat.push({name: timeTmp, value: bstat.stat[i]});
+                        }
+                    }, 1000);
                 });
-            }, 10000);
+            }, 30000);
         },
         activated(){
             this.handleListener();
@@ -310,8 +327,7 @@
                     // render: 'canvas' // 设置渲染方式（有两种方式 table和canvas，默认是canvas）  
                     // background: '#f0f'  
                     // foreground: '#ff0'  
-                })  
-                console.log(qrcode)  
+                })   
             },
             handleListener(){
                 bus.$on('collapse', this.handleBus);
@@ -328,10 +344,12 @@
                     this.$refs.scoreCanvas.renderChart();
                 if (this.$refs.voteCanvas != undefined)
                     this.$refs.voteCanvas.renderChart();
+                this.$refs.bar.renderChart();
                 this.$refs.line.renderChart();
             },
             bonusSumbit() {
                 var bonusData = this.bonusForm;
+                this.qrcodeVisibile = false;
                 for (var key in bonusData) {
                     if (bonusData[key] === '') {
                         this.$message.error('请完善数据！');
@@ -381,6 +399,7 @@
             },
             scoreSumbit() {
                 console.log("scoreForm: ", JSON.stringify(this.scoreForm));
+                this.qrcodeVisibile = false;
                 this.imageIndex = 1;
                 var scoreData = this.scoreForm; 
                 for (var key in scoreData) {
@@ -405,22 +424,24 @@
                 }
                 this.scoreWs.onmessage = function(msg) {
                     console.log("score receive: %s", JSON.stringify(msg.data));
+                    self.options.title = "评分结果";
                     //console.log(typeof(msg.data));
                     self.scoreForm = JSON.parse(msg.data);
                     self.chartVisible['score'] = true;
                     setTimeout(function() {
                         self.chartVisible['score'] = false;
+                        self.data = self.scoreForm.contents;
                         self.imageIndex = 0;
                     }, 10000);
                 }
                 this.scoreWs.onclose = function() {
                     self.scoreWs = null;
                 }
-                this.options.title = "评分结果";
                 
             },
             voteSumbit() {
                 console.log("voteForm: ", JSON.stringify(this.voteForm));
+                this.qrcodeVisibile = false;
                 var voteData = this.voteForm; 
                 for (var key in voteData) {
                     if (voteData[key] === '') {
@@ -429,7 +450,6 @@
                     }
                 }
                 this.imageIndex = 2;
-                this.options.title = "投票结果";
                 voteData.conferenceID = this.$route.params['conferenceID'] === undefined ? 0 : this.$route.params['conferenceID'] ;
 
                 var voteWsURL = this.wssURL + "/setvote";
@@ -444,10 +464,12 @@
                 }
                 var count = 0;
                 this.voteWs.onmessage = function(msg) {
+                    self.options.title = "投票结果";
                     console.log("vote receive: %s", JSON.stringify(msg.data));
                     if (count == 0) {
                         setTimeout(function() {
                             self.chartVisible['vote'] = false;
+                            self.data = self.voteForm.contents;
                             self.imageIndex = 0;;
                         }, 30000);
                     }
@@ -477,6 +499,7 @@
                     this.gameVisible[key] = false;
                 }
                 this.qrcodeVisibile = false;
+                this.bgVisible = true;
                 this.gameVisible[this.form['gameType']] = true;
                 console.log("time: ", new Date().getTime());
             },
@@ -663,5 +686,16 @@
     height: 100%;
 }
 
+.satis {
+    position: absolute;
+    right: 0%;
+    z-index: 999;
+}
+.line-chart {
+    width: 100%;
+    height:300px;
+    position: absolute;;
+    z-index: 998;
+}
 
 </style>
