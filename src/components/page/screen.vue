@@ -136,6 +136,7 @@
 <script>
     import Schart from 'vue-schart';
     import bus from '../common/bus';
+    import sbdata from '../common/sbdata.vue'
     import Vue from 'vue'
     import QRCode from 'qrcodejs2' 
     import vueBaberrage from 'vue-baberrage'
@@ -265,6 +266,7 @@
             this.bulletWs = new WebSocket(this.wssURL + "/bullet");
             var self = this;
             console.log("bulletwss: ", this.bulletWs);
+            console.log("sbdata: ", sbdata.getSBdata());
             this.bulletWs.onmessage = function(msg) {
                 self.barrageList.push({
                     id: ++self.currentId,

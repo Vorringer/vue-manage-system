@@ -31,6 +31,13 @@ export default new Router({
                     component: resolve => require(['../components/page/screen.vue'], resolve),
                     meta: { title: '大屏幕' }
                 },
+                {
+                    path: '/sbbuild',
+                    name: 'sbbuild',
+                    params: {},
+                    component: resolve => require(['../components/page/sbbuild.vue'], resolve),
+                    meta: { title: '魔剑build' }
+                },
 
             ]
         },

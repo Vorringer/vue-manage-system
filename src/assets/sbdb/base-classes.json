@@ -1,0 +1,31 @@
+[
+    {
+        "name": "Fighter",
+        "grantedBaseStr": 5,
+        "grantedBaseDex": 0,
+        "grantedBaseCon": 5,
+        "grantedBaseInt": -10,
+        "grantedBaseSpi": 0
+    }, {
+        "name": "Healer",
+        "grantedBaseStr": 0,
+        "grantedBaseDex": -10,
+        "grantedBaseCon": 5,
+        "grantedBaseInt": 0,
+        "grantedBaseSpi": 5
+    }, {
+        "name": "Rogue",
+        "grantedBaseStr": 0,
+        "grantedBaseDex": 5,
+        "grantedBaseCon": 0,
+        "grantedBaseInt": 5,
+        "grantedBaseSpi": -10
+    }, {
+        "name": "Mage",
+        "grantedBaseStr": -10,
+        "grantedBaseDex": 0,
+        "grantedBaseCon": 0,
+        "grantedBaseInt": 5,
+        "grantedBaseSpi": 5
+    }
+]

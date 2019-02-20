@@ -54,6 +54,11 @@
                         index: 'screen',
                         title: '大屏幕'
                     },
+                    {
+                        icon: 'el-icon-lx-copy',
+                        index: 'sbbuild',
+                        title: '魔剑build'
+                    },
                     
                     
                 ]

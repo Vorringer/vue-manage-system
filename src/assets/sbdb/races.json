@@ -1,0 +1,428 @@
+[
+    {
+        "name": "Aelfborn",
+        "cost": 5,
+        "healthBonus": 0,
+        "manaBonus": 30,
+        "staminaBonus": 70,
+        "grantedBaseStr": 0,
+        "grantedMaxStr": -5,
+        "grantedBaseDex": 10,
+        "grantedMaxDex": 20,
+        "grantedBaseCon": 0,
+        "grantedMaxCon": -5,
+        "grantedBaseInt": 5,
+        "grantedMaxInt": 5,
+        "grantedBaseSpi": -5,
+        "grantedMaxSpi": -15,
+        "availableBaseClasses": ["Fighter", "Healer", "Mage", "Rogue"],
+        "availablePrestigeClasses": ["Assassin", "Barbarian", "Bard", "Channeler", "Crusader", "Doomsayer", "Druid", "Fury", "Huntress", "Necromancer", "Nightstalker", "Prelate", "Priest", "Ranger", "Scout", "Sentinel", "Thief", "Warlock", "Warrior", "Wizard"],
+        "availableDisciplines": ["Archer","Artillerist", "Battle Magus","Berserker","Black Mask","Blade Master","Bounty Hunter","Commander","Conjurer","Dark Knight","Darksworn","Enchanter","Gladiator","Huntsman","Knight","Prospector","Rat Catcher","Rune Caster","Saboteur","Sanctifier","Sapper","Storm Lord","Summoner","Traveler","Undead Hunter","Valkyr","Werewolf","Wyrmslayer"],
+        "granted": [{
+            "abilities": [{
+                "name": "Wildkin's Chase"
+            }]
+        }]
+    }, {
+        "name": "Aracoix",
+        "cost": 15,
+        "healthBonus": 0,
+        "manaBonus": 20,
+        "staminaBonus": 70,
+        "grantedBaseStr": 10,
+        "grantedMaxStr": 15,
+        "grantedBaseDex": 15,
+        "grantedMaxDex": 20,
+        "grantedBaseCon": 5,
+        "grantedMaxCon": 5,
+        "grantedBaseInt": -5,
+        "grantedMaxInt": -15,
+        "grantedBaseSpi": -10,
+        "grantedMaxSpi": -15,
+        "availableBaseClasses": ["Fighter", "Healer", "Rogue"],
+        "availablePrestigeClasses": ["Assassin", "Barbarian", "Bard", "Huntress", "Priest", "Ranger", "Scout", "Thief", "Warlock", "Warrior"],
+        "availableDisciplines": ["Archer", "Artillerist", "Black Mask", "Bounty Hunter", "Commander", "Dark Knight", "Darksworn","Gladiator","Huntsman","Prospector","Rune Caster","Saboteur","Sapper","Savant","Skydancer","Storm Lord","Summoner","Traveler","Undead Hunter","Wyrmslayer"],
+        "granted": [{
+            "abilities": [{
+                "name": "Natural Flight"
+            }],
+            "resistances": [{
+                "name": "Mental",
+                "value": 10
+            }]
+        }]
+    }, {
+        "name": "Centaur",
+        "cost": 10,
+        "healthBonus": 5,
+        "manaBonus": 15,
+        "staminaBonus": 70,
+        "grantedBaseStr": 5,
+        "grantedMaxStr": 10,
+        "grantedBaseDex": -5,
+        "grantedMaxDex": -15,
+        "grantedBaseCon": 15,
+        "grantedMaxCon": 25,
+        "grantedBaseInt": -5,
+        "grantedMaxInt": -15,
+        "grantedBaseSpi": 10,
+        "grantedMaxSpi": 5,
+        "availableBaseClasses": ["Fighter", "Healer"],
+        "availablePrestigeClasses": ["Barbarian", "Crusader", "Druid", "Huntress", "Prelate", "Priest", "Ranger", "Sentinel", "Warrior"],
+        "availableDisciplines": ["Archer", "Artillerist", "Bounty Hunter", "Commander", "Dark Knight", "Darksworn", "Enchanter", "Gladiator", "Huntsman", "Knight", "Prospector", "Rat Catcher", "Rune Caster", "Sanctifier", "Sapper", "Storm Lord", "Traveler", "Undead Hunter", "Wyrmslayer"],
+        "granted": [{
+            "resistances": [{
+                "name": "Unholy",
+                "value": -5
+            }],
+            "skills": ["Spear"],
+            "skillPoints": [{
+                "name": "Spear",
+                "value": 10
+            }]
+        }]
+    }, {
+        "name": "Dwarf",
+        "cost": 15,
+        "healthBonus": 30,
+        "manaBonus": 15,
+        "staminaBonus": 90,
+        "grantedBaseStr": 5,
+        "grantedMaxStr": 10,
+        "grantedBaseDex": -5,
+        "grantedMaxDex": -20,
+        "grantedBaseCon": 20,
+        "grantedMaxCon": 40,
+        "grantedBaseInt": -10,
+        "grantedMaxInt": -30,
+        "grantedBaseSpi": 0,
+        "grantedMaxSpi": 0,
+        "availableBaseClasses": ["Fighter", "Healer"],
+        "availablePrestigeClasses": ["Crusader", "Prelate", "Priest", "Sentinel", "Warrior"],
+        "availableDisciplines": ["Animator", "Archer", "Artillerist","Bounty Hunter", "Clanwarden", "Commander", "Darksworn", "Enchanter", "Forge Master", "Giant Killer", "Gladiator", "Prospector", "Rat Catcher", "Rune Caster", "Sanctifier","Sapper", "Traveler", "Undead Hunter", "Wyrmslayer"],
+        "granted": [{
+            "resistances": [{
+                "name": "Crushing",
+                "value": 5
+            }, {
+                "name": "Piercing",
+                "value": 10
+            }, {
+                "name": "Slashing",
+                "value": 10
+            }, {
+                "name": "Lightning",
+                "value": 5
+            }, {
+                "name": "Magic",
+                "value": -5
+            }, {
+                "name": "Unholy",
+                "value": -5
+            }],
+            "skills": ["Axe", "Toughness"],
+            "skillPoints": [{
+                "name": "Axe",
+                "value": 10
+            }, {
+                "name": "Hammer",
+                "value": 10
+            }]
+        }]
+    }, {
+        "name": "Elf",
+        "cost": 15,
+        "healthBonus": 0,
+        "manaBonus": 35,
+        "staminaBonus": 70,
+        "grantedBaseStr": -5,
+        "grantedMaxStr": -30,
+        "grantedBaseDex": 25,
+        "grantedMaxDex": 40,
+        "grantedBaseCon": -5,
+        "grantedMaxCon": -30,
+        "grantedBaseInt": 15,
+        "grantedMaxInt": 20,
+        "grantedBaseSpi": 0,
+        "grantedMaxSpi": 0,
+        "availableBaseClasses": ["Fighter", "Healer", "Rogue", "Mage"],
+        "availablePrestigeClasses": ["Assassin","Bard","Channeler","Crusader","Doomsayer","Druid","Necromancer","Fury","Huntress","Prelate","Priest","Ranger","Scout","Sentinel","Thief","Warrior","Wizard"],
+        "availableDisciplines": ["Animator","Archer","Archmage","Artillerist","Battle Magus","Black Mask","Blade Weaver","Bounty Hunter","Commander","Conjurer","Darksworn","Enchanter","Gladiator","Huntsman","Prospector","Rat Catcher","Rune Caster","Saboteur","Sanctifier","Sapper","Summoner","Traveler","Undead Hunter","Wyrmslayer"],
+        "granted": [{
+            "resistances": [{
+                "name": "Magic",
+                "value": 5
+            },{
+                "name": "Poison",
+                "value": -5
+            }],
+            "skills": ["Sword"],
+            "skillPoints": [{
+                "name": "Sword",
+                "value": 10
+            }]
+        }]
+    }, {
+        "name": "Half Giant",
+        "cost": 10,
+        "healthBonus": 20,
+        "manaBonus": 5,
+        "staminaBonus": 70,
+        "grantedBaseStr": 20,
+        "grantedMaxStr": 50,
+        "grantedBaseDex": 0,
+        "grantedMaxDex": -35,
+        "grantedBaseCon": 20,
+        "grantedMaxCon": 40,
+        "grantedBaseInt": -10,
+        "grantedMaxInt": -15,
+        "grantedBaseSpi": -10,
+        "grantedMaxSpi": -40,
+        "availableBaseClasses": ["Fighter"],
+        "availablePrestigeClasses": ["Barbarian","Crusader","Huntress","Ranger","Sentinel","Templar","Warrior"],
+        "availableDisciplines": ["Archer","Artillerist","Berserker","Bounty Hunter","Commander","Dark Knight","Gladiator","Huntsman","Knight","Prospector","Rune Caster","Sapper","Storm Lord","Traveler","Undead Hunter","Werebear","Wyrmslayer"],
+        "granted": [{
+            "resistances": [{
+                "name": "Cold",
+                "value": 10
+            },{
+                "name": "Fire",
+                "value": -5
+            }],
+            "skills": ["Athletics","Toughness","Axe","Hammer","Great Axe","Great Sword","Great Hammer"],
+            "skillPoints": [{
+                "name": "Axe",
+                "value": 10
+            },{
+                "name": "Hammer",
+                "value": 10
+            },{
+                "name": "Great Axe",
+                "value": 10
+            },{
+                "name": "Great Sword",
+                "value": 10
+            },{
+                "name": "Great Hammer",
+                "value": 10
+            }]
+        }]
+    }, {
+        "name": "Human",
+        "cost": 0,
+        "healthBonus": 0,
+        "manaBonus": 25,
+        "staminaBonus": 70,
+        "grantedBaseStr": 0,
+        "grantedMaxStr": 0,
+        "grantedBaseDex": 0,
+        "grantedMaxDex": 0,
+        "grantedBaseCon": 0,
+        "grantedMaxCon": 0,
+        "grantedBaseInt": 0,
+        "grantedMaxInt": 0,
+        "grantedBaseSpi": 0,
+        "grantedMaxSpi": 0,
+        "availableBaseClasses": ["Fighter", "Healer", "Rogue", "Mage"],
+        "availablePrestigeClasses": ["Assassin","Barbarian","Bard","Channeler","Confessor","Crusader","Doomsayer","Druid","Necromancer","Fury","Huntress","Nightstalker","Prelate","Priest","Ranger","Scout","Sentinel","Templar","Thief","Warlock","Warrior","Wizard"],
+        "availableDisciplines": ["Animator","Archer","Artillerist","Battle Magus","Berserker","Black Mask","Blade Master","Bounty Hunter","Commander","Conjurer","Dark Knight","Darksworn","Enchanter","Gladiator","Huntsman","Knight","Prospector","Rat Catcher","Rune Caster","Saboteur","Sanctifier","Sapper","Storm Lord","Summoner","Traveler","Undead Hunter","Valkyr","Werebear","Wererat","Werewolf","Wyrmslayer"]
+    }, {
+        "name": "Irekei",
+        "cost": 15,
+        "healthBonus": 0,
+        "manaBonus": 20,
+        "staminaBonus": 70,
+        "grantedBaseStr": 0,
+        "grantedMaxStr": -15,
+        "grantedBaseDex": 15,
+        "grantedMaxDex": 30,
+        "grantedBaseCon": 0,
+        "grantedMaxCon": -10,
+        "grantedBaseInt": -5,
+        "grantedMaxInt": 10,
+        "grantedBaseSpi": -10,
+        "grantedMaxSpi": -15,
+        "availableBaseClasses": ["Fighter", "Healer", "Rogue", "Mage"],
+        "availablePrestigeClasses": ["Assassin","Bard","Channeler","Fury","Nightstalker","Priest","Ranger","Scout","Thief","Warrior","Wizard"],
+        "availableDisciplines": ["Archer","Artillerist","Battle Magus","Black Mask","Blood Prophet","Bounty Hunter","Commander","Conjurer","Enchanter","Gladiator","Huntsman","Prospector","Rat Catcher","Rune Caster","Saboteur","Sanctifier","Sapper","Summoner","Sun Dancer","Traveler","Undead Hunter"],
+        "granted": [{
+            "resistances": [{
+                "name": "Fire",
+                "value": 20
+            },{
+                "name": "Cold",
+                "value": -10
+            }],
+            "skills": ["Unarmed Combat"],
+            "skillPoints": [{
+                "name": "Dagger",
+                "value": 10
+            },{
+                "name": "Unarmed Combat",
+                "value": 10
+            }]
+        }]
+    }, {
+        "name": "Minotaur",
+        "cost": 15,
+        "healthBonus": 20,
+        "manaBonus": 0,
+        "staminaBonus": 70,
+        "grantedBaseStr": 35,
+        "grantedMaxStr": 70,
+        "grantedBaseDex": -15,
+        "grantedMaxDex": -30,
+        "grantedBaseCon": 30,
+        "grantedMaxCon": 40,
+        "grantedBaseInt": -15,
+        "grantedMaxInt": -35,
+        "grantedBaseSpi": -15,
+        "grantedMaxSpi": -35,
+        "availableBaseClasses": ["Fighter", "Healer"],
+        "availablePrestigeClasses": ["Barbarian","Doomsayer","Warrior"],
+        "availableDisciplines": ["Artillerist","Berserker","Blood Horn","Bounty Hunter","Dark Knight","Gladiator","Huntsman","Prospector","Sanctifier","Sapper","Thrall","Traveler"],
+        "granted": [{
+            "resistances": [{
+                "name": "Crushing",
+                "value": 5
+            },{
+                "name": "Piercing",
+                "value": 5
+            },{
+                "name": "Slashing",
+                "value": 5
+            },{
+                "name": "Cold",
+                "value": 20
+            },{
+                "name": "Magic",
+                "value": -5
+            },{
+                "name": "Mental",
+                "value": -10
+            }],
+            "skills": ["Toughness"],
+            "skillPoints": [{
+                "name": "Pole Arm",
+                "value": 10
+            }]
+        }]
+    }, {
+        "name": "Nephilim",
+        "cost": 15,
+        "healthBonus": 0,
+        "manaBonus": 35,
+        "staminaBonus": 70,
+        "grantedBaseStr": 15,
+        "grantedMaxStr": 40,
+        "grantedBaseDex": -25,
+        "grantedMaxDex": -40,
+        "grantedBaseCon": 0,
+        "grantedMaxCon": -10,
+        "grantedBaseInt": 25,
+        "grantedMaxInt": 30,
+        "grantedBaseSpi": -10,
+        "grantedMaxSpi": -20,
+        "availableBaseClasses": ["Fighter", "Healer", "Rogue", "Mage"],
+        "availablePrestigeClasses": ["Assassin","Barbarian","Bard","Channeler","Doomsayer","Necromancer","Fury","Scout","Thief","Warlock","Warrior","Wizard"],
+        "availableDisciplines": ["Archer","Artillerist","Battle Magus","Bounty Hunter","Commander","Conjurer","Dark Knight","Gladiator","Huntsman","Prospector","Rat Catcher","Saboteur","Sanctifier","Sapper","Summoner","Traveler","Wyrmslayer"],
+        "granted": [{
+            "resistances": [{
+                "name": "Fire",
+                "value": 15
+            },{
+                "name": "Lightning",
+                "value": 10
+            },{
+                "name": "Magic",
+                "value": -10
+            },{
+                "name": "Holy",
+                "value": -15
+            }]
+        }]
+    }, {
+        "name": "Shade",
+        "cost": 10,
+        "healthBonus": 0,
+        "manaBonus": 30,
+        "staminaBonus": 70,
+        "grantedBaseStr": 0,
+        "grantedMaxStr": -10,
+        "grantedBaseDex": 10,
+        "grantedMaxDex": 15,
+        "grantedBaseCon": 0,
+        "grantedMaxCon": -5,
+        "grantedBaseInt": 5,
+        "grantedMaxInt": 10,
+        "grantedBaseSpi": -10,
+        "grantedMaxSpi": -10,
+        "availableBaseClasses": ["Fighter", "Rogue", "Mage"],
+        "availablePrestigeClasses": ["Assassin","Channeler","Necromancer","Ranger","Scout","Thief","Warlock","Warrior","Wizard"],
+        "availableDisciplines": ["Animator","Archer","Artillerist","Battle Magus","Berserker","Black Mask","Blade Master","Bounty Hunter","Commander","Conjurer","Dark Knight","Enchanter","Gladiator","Huntsman","Prospector","Rat Catcher","Rune Caster","Saboteur","Sapper","Shroudborne","Summoner","Traveler","Undead Hunter","Wererat","Wyrmslayer"],
+        "granted": [{
+            "resistances": [{
+                "name": "Poison",
+                "value": 10
+            },{
+                "name": "Unholy",
+                "value": 5
+            },{
+                "name": "Holy",
+                "value": -20
+            }]
+        }]
+    }, {
+        "name": "Vampire",
+        "cost": 25,
+        "healthBonus": 40,
+        "manaBonus": 0,
+        "staminaBonus": 70,
+        "grantedBaseStr": 5,
+        "grantedMaxStr": 20,
+        "grantedBaseDex": 10,
+        "grantedMaxDex": 20,
+        "grantedBaseCon": 5,
+        "grantedMaxCon": 20,
+        "grantedBaseInt": 10,
+        "grantedMaxInt": 20,
+        "grantedBaseSpi": -10,
+        "grantedMaxSpi": -35,
+        "availableBaseClasses": ["Fighter", "Rogue", "Mage"],
+        "availablePrestigeClasses": ["Assassin","Necromancer","Scout","Thief","Warlock","Warrior","Wizard"],
+        "availableDisciplines": ["Archer","Artillerist","Battle Magus","Belgosch","Black Mask","Bounty Hunter","Commander","Dark Knight","Drannok","Gorgoi","Prospector","Rat Catcher","Saboteur","Sapper","Strigoi","Traveler","Wyrmslayer"],
+        "granted": [{
+            "abilities": [{
+                "name": "Dark Fortitude"
+            }, {
+                "name": "The Lesser Kiss"
+            }, {
+                "name": "Vampire's Kiss"    
+            }],
+            "skills": ["Bloodcraft"],
+            "skillPoints": [{
+                "name": "Bloodcraft",
+                "value": 10
+            }],
+            "resistances": [{
+                "name": "Poison",
+                "value": 10
+            },{
+                "name": "Unholy",
+                "value": 10
+            },{
+                "name": "Cold",
+                "value": 10
+            },{
+                "name": "Healing",
+                "value": 35
+            },{
+                "name": "Holy",
+                "value": -25
+            },{
+                "name": "Fire",
+                "value": -25
+            }]
+        }]
+      }
+]
