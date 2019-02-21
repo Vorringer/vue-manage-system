@@ -120,6 +120,10 @@
             sb_starting_attributes: function() {
                 return sbdata.get_sb_starting_attributes();
             },
+            sb_init_stats: function() {
+                return sbdata.get_sb_init_stats();
+            }
+            
         },
         methods: {
             
