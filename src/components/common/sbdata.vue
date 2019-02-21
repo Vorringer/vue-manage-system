@@ -8,7 +8,7 @@ import sb_races from '../../assets/sbdb/races.json'
 import sb_prestige_classes from '../../assets/sbdb/prestige-classes.json'
 import sb_starting_traits from '../../assets/sbdb/starting-traits.json'
 import sb_stat_runes from '../../assets/sbdb/stat-runes.json'
-
+import sb_starting_attributes from '../../assets/sbdb/starting-attributes.json'
 
 function get_sb_base_classes () {
   return sb_base_classes;
@@ -31,6 +31,11 @@ function get_sb_starting_traits () {
 function get_sb_stat_runes () {
   return sb_stat_runes;
 }
+function get_sb_starting_attributes () {
+  return sb_starting_attributes;
+}
+
+
 
 export default{
   get_sb_base_classes,
@@ -40,6 +45,7 @@ export default{
   get_sb_prestige_classes,
   get_sb_starting_traits,
   get_sb_stat_runes,
+  get_sb_starting_attributes,
 }
 </script>
 <style>

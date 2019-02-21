@@ -8,11 +8,13 @@
         <div class="header-right">
             <div class="header-user-con">
                 <!-- 全屏显示 -->
+                <!--
                 <div class="btn-fullscreen" @click="handleFullScreen">
                     <el-tooltip effect="dark" :content="fullscreen?`取消全屏`:`全屏`" placement="bottom">
                         <i class="el-icon-rank"></i>
                     </el-tooltip>
                 </div>
+                -->
                 <!-- 消息中心 -->
                 <div class="btn-bell">
                     <el-tooltip effect="dark" :content="message?`有${message}条未读消息`:`消息中心`" placement="bottom">
@@ -103,7 +105,7 @@
         position: relative;
         box-sizing: border-box;
         width: 100%;
-        height: 70px;
+        height: 50px;
         font-size: 22px;
         color: #fff;
     }
@@ -111,12 +113,12 @@
         float: left;
         padding: 0 21px;
         cursor: pointer;
-        line-height: 70px;
+        line-height: 60px;
     }
     .header .logo{
         float: left;
         width:250px;
-        line-height: 70px;
+        line-height: 60px;
     }
     .header-right{
         float: right;
@@ -155,6 +157,7 @@
     }
     .user-name{
         margin-left: 10px;
+        line-height: 50px;
     }
     .user-avator{
         margin-left: 20px;

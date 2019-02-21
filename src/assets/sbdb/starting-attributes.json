@@ -1,0 +1,27 @@
+[
+    {
+        "name": "Strength",
+        "base": 40,
+        "max": 100
+    },
+    {
+        "name": "Dexterity",
+        "base": 40,
+        "max": 100
+    },
+    {
+        "name": "Constitution",
+        "base": 40,
+        "max": 100
+    },
+    {
+        "name": "Intelligence",
+        "base": 40,
+        "max": 100
+    },
+    {
+        "name": "Spirit",
+        "base": 40,
+        "max": 100
+    }
+]
