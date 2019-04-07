@@ -2,22 +2,10 @@
     <div class="container">
         <el-row :gutter="20">
             <el-col :span="12">
-                <v-statview></v-statview>
+                <v-statview v-bind:buildData="buildData"></v-statview>
             </el-col>
             <el-col :span="7">
-                <div class="container"  style="height:500px;"  ref="traits">
-                    <el-scrollbar style="height:100%;">
-                            <el-checkbox-group v-model="form.traits" >
-                                <div v-for="trait in sb_starting_traits" :key="trait.name">
-                                    <el-checkbox
-                                        v-bind:style="{minWidth:trait_minWidth}"  
-                                        :label="trait.name" 
-                                        border>
-                                    </el-checkbox>
-                                </div>
-                            </el-checkbox-group>
-                    </el-scrollbar>
-                </div>
+                <v-traitsview v-bind:buildData="buildData"></v-traitsview>
             </el-col>
             <el-col :span="5">
                 <div class="container">
@@ -30,24 +18,21 @@
 <script>
     import sbdata from "../common/sbdata.vue"
     import vStatview from "../common/statview.vue"
+    import vTraitsview from "../common/traitsview.vue"
     export default {
         name: 'sbbuild',
         data() {
             return {
-                url: 'http://120.78.91.122:8080/Entity/Uebde5c813efa2/MobileMeet/Conference/',
-                form: {},
-                trait_minWidth: "200px",
-                
+                buildData: {}
             }
         },
         components:{
-            vStatview
+            vStatview,
+            vTraitsview
         },
         created() {
         },
         mounted() {
-            var self = this;
-            self.trait_minWidth = self.$refs["traits"].clientWidth * 0.7 + "px";
         },
         computed: {
             sb_base_classes: function() {

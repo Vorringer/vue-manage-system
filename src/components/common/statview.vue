@@ -1,8 +1,8 @@
 <template>
     <div class="container" style="height:500px">
-        <el-form ref="form" :model="form" label-width="80px">
+        <el-form ref="form" :model="buildata" label-width="80px">
             <el-form-item label="Race">
-                <el-select v-model="form.race" placeholder="select race">
+                <el-select v-model="buildData.race" placeholder="select race">
                     <el-option 
                         v-for="race in sb_races" 
                         :key="race.name" 
@@ -12,13 +12,13 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="Sex">
-                <el-radio-group v-model="form.sex">
+                <el-radio-group v-model="buildData.sex">
                     <el-radio label="Male"></el-radio>
                     <el-radio label="Female"></el-radio>
                 </el-radio-group>
             </el-form-item>
             <el-form-item label="BaseClass">
-                <el-select v-model="form.bclass" placeholder="select base class">
+                <el-select v-model="buildData.bclass" placeholder="select base class">
                     <el-option 
                         v-for="bclass in sb_base_classes" 
                         :key="bclass.name" 
@@ -36,14 +36,14 @@
                         <el-col :span="11">
                             <el-progress :text-inside="true" 
                                 :stroke-width="20" 
-                                :percentage="form.stat"
+                                :percentage="buildData.stat"
                                 style="margin-top:6px">
                             </el-progress>
                         </el-col>
                         <el-col :span="8">
                             <el-input-number 
                                 size="mini"
-                                v-model="form.stat" 
+                                v-model="buildData.stat" 
                                 :min="1" 
                                 :max="100" 
                                 label="描述文字"
@@ -63,9 +63,9 @@ export default {
         name: 'statview',
         data() {
             return {
-                form: {},
             }
         },
+        props: ['buildData'],
         created() {
         },
         mounted() {
