@@ -4,12 +4,11 @@
             <el-col :span="12">
                 <v-statview v-bind:buildData="buildData"></v-statview>
             </el-col>
-            <el-col :span="7">
+            <el-col :span="5">
                 <v-traitsview v-bind:buildData="buildData"></v-traitsview>
             </el-col>
-            <el-col :span="5">
-                <div class="container">
-                </div>
+            <el-col :span="7">
+                <v-stats v-bind:buildData="buildData"></v-stats>
             </el-col>
         </el-row>
     </div>
@@ -19,6 +18,7 @@
     import sbdata from "../common/sbdata.vue"
     import vStatview from "../common/statview.vue"
     import vTraitsview from "../common/traitsview.vue"
+    import vStats from "../common/stats.vue"
     export default {
         name: 'sbbuild',
         data() {
@@ -28,9 +28,11 @@
         },
         components:{
             vStatview,
-            vTraitsview
+            vTraitsview,
+            vStats
         },
         created() {
+            this.buildData = this.sb_init_stats;
         },
         mounted() {
         },

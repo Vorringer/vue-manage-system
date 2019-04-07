@@ -1,7 +1,7 @@
 <template>
     <div class="container"  style="height:500px;"  ref="traits">
         <el-scrollbar style="height:100%;">
-                <el-checkbox-group v-model="buildData.traits" >
+                <el-checkbox-group v-model="buildData.starting_traits" >
                     <div v-for="trait in sb_starting_traits" :key="trait.name">
                         <el-checkbox
                             v-bind:style="{minWidth:trait_minWidth}"  

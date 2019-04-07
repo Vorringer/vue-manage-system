@@ -1,6 +1,6 @@
 <template>
     <div class="container" style="height:500px">
-        <el-form ref="form" :model="buildata" label-width="80px">
+        <el-form ref="form" :model="buildData" label-width="80px">
             <el-form-item label="Race">
                 <el-select v-model="buildData.race" placeholder="select race">
                     <el-option 
@@ -18,12 +18,12 @@
                 </el-radio-group>
             </el-form-item>
             <el-form-item label="BaseClass">
-                <el-select v-model="buildData.bclass" placeholder="select base class">
+                <el-select v-model="buildData.base_class" placeholder="select base class">
                     <el-option 
-                        v-for="bclass in sb_base_classes" 
-                        :key="bclass.name" 
-                        :label="bclass.name" 
-                        :value="bclass.name" >
+                        v-for="base_class in sb_base_classes" 
+                        :key="base_class.name" 
+                        :label="base_class.name" 
+                        :value="base_class.name" >
                     </el-option>
                 </el-select>
             </el-form-item>
@@ -36,14 +36,14 @@
                         <el-col :span="11">
                             <el-progress :text-inside="true" 
                                 :stroke-width="20" 
-                                :percentage="buildData.stat"
+                                :percentage="buildData.attributes[stat.name.toLocaleLowerCase()]"
                                 style="margin-top:6px">
                             </el-progress>
                         </el-col>
                         <el-col :span="8">
                             <el-input-number 
                                 size="mini"
-                                v-model="buildData.stat" 
+                                v-model="buildData.attributes[stat.name.toLocaleLowerCase()]" 
                                 :min="1" 
                                 :max="100" 
                                 label="描述文字"

@@ -80,7 +80,7 @@
                             </template>
                         </el-table-column>
                         <el-table-column width="60">
-                            <template slot-scope="scope">
+                            <template>
                                 <i class="el-icon-edit"></i>
                                 <i class="el-icon-delete"></i>
                             </template>
