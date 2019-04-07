@@ -35,9 +35,9 @@
                         </el-col>
                         <el-col :span="11">
                             <el-progress :text-inside="true" 
-                                :stroke-width="26" 
+                                :stroke-width="20" 
                                 :percentage="form.stat"
-                                style="vertical-align:middle">
+                                style="margin-top:6px">
                             </el-progress>
                         </el-col>
                         <el-col :span="8">
