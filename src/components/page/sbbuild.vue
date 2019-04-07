@@ -2,57 +2,7 @@
     <div class="container">
         <el-row :gutter="20">
             <el-col :span="12">
-                <div class="container" style="height:500px">
-                    <el-form ref="form" :model="form" label-width="80px">
-                        <el-form-item label="Race">
-                            <el-select v-model="form.race" placeholder="select race">
-                                <el-option 
-                                    v-for="race in sb_races" 
-                                    :key="race.name" 
-                                    :label="race.name" 
-                                    :value="race.name" >
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="Sex">
-                            <el-radio-group v-model="form.sex">
-                                <el-radio label="Male"></el-radio>
-                                <el-radio label="Female"></el-radio>
-                            </el-radio-group>
-                        </el-form-item>
-                        <el-form-item label="BaseClass">
-                            <el-select v-model="form.bclass" placeholder="select base class">
-                                <el-option 
-                                    v-for="bclass in sb_base_classes" 
-                                    :key="bclass.name" 
-                                    :label="bclass.name" 
-                                    :value="bclass.name" >
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="Attributes">
-                            <div class="container">
-                                <el-row :gutter="5" v-for="stat in sb_starting_attributes" :key="stat.name">
-                                    <el-col :span="5">
-                                        <label>{{stat.name}}</label>
-                                    </el-col>
-                                    <el-col :span="11">
-                                        <el-progress :text-inside="true" :stroke-width="32" :percentage="form.stat"></el-progress>
-                                    </el-col>
-                                    <el-col :span="8">
-                                        <el-input-number 
-                                            size="mini"
-                                            v-model="form.stat" 
-                                            :min="1" 
-                                            :max="100" 
-                                            label="描述文字">
-                                        </el-input-number>
-                                    </el-col>
-                                </el-row>
-                            </div>
-                        </el-form-item>
-                    </el-form>
-                </div>
+                <v-statview></v-statview>
             </el-col>
             <el-col :span="7">
                 <div class="container"  style="height:500px;"  ref="traits">
@@ -79,6 +29,7 @@
 
 <script>
     import sbdata from "../common/sbdata.vue"
+    import vStatview from "../common/statview.vue"
     export default {
         name: 'sbbuild',
         data() {
@@ -88,6 +39,9 @@
                 trait_minWidth: "200px",
                 
             }
+        },
+        components:{
+            vStatview
         },
         created() {
         },
